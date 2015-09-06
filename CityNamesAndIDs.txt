@@ -14,17 +14,17 @@ Siguatepeque
 0318
 Siguatepeque
 0318
-Santa Rosa de Copán
+Santa Rosa de Copan
 0401
-Copán Ruinas
+Copan Ruinas
 0404
-El Paraíso
+El Paraiso
 0409
 San Antonio
 0415
 San Pedro Sula
 0501
-Puerto Cortés
+Puerto Cortes
 0506
 Potrerillos
 0505
@@ -32,7 +32,7 @@ Choloma
 0502
 Choluteca
 0601
-Yuscarán
+Yuscaran
 0701
 Tegucigalpa D.C.
 0801
@@ -44,7 +44,7 @@ Puerto Lempira
 0901
 La Esperanza
 1001
-Roatán
+Roatan
 1101
 Utila
 1104
@@ -54,7 +54,7 @@ Nueva Ocotepeque
 1401
 Juticalpa
 1501
-Santa Bárbara
+Santa Barbara
 1601
 Nacaome
 1701

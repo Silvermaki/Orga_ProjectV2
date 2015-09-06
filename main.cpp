@@ -17,7 +17,7 @@ void saveFiles(vector<city>, vector<client>, vector<call>, vector<phone>);
 
 int main(int argc, char* argv[]){
 	//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////
-	/*srand(time(NULL));
+	srand(time(NULL));
 	phone temp;
 	call temp2;
 	city temp5;
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
 	vector<call> call_list = temp2.callVector(numbers_list, starts_long, ends_long);
 	vector<phone> phone_list = temp.phoneVector(numbers_list, sid_list);
 	saveFiles(city_list, client_list, call_list, phone_list);
-	*/
+	
 	//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -END-////////////////////////////////////////////
 
 	return 0;
@@ -45,19 +45,38 @@ void saveFiles(vector<city> cities, vector<client> clients, vector<call> calls, 
 	ofstream file("cities_vector.txt");
 	int i;
 	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " I:City_ID\n";
+		file << " N:City_Name\n";
+		file << "MBRRRRRRRBIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n";
 		for(i = 0; i<cities.size() ; i++){
-			file << '_' << "0000000 " <<setfill('0') << setw(4) << cities.at(i).getId_city() << setfill(' ') << setw(40) << cities.at(i).getName()<<"\n";
+			file << "_ " << "        " <<setfill('0') << setw(4) << cities.at(i).getId_city() << setfill(' ') << setw(40) << cities.at(i).getName()<<"\n";
 		}
 		file.close();
 	}else{
 		cout << "Error opening file -cities_vector.txt-";
 	}
 	
-
 	file.open("clients_vector.txt");
 	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " I:Client_ID\n";
+		file << " N:Client_Name\n";
+		file << " G:Gender\n";
+		file << " C:City_ID\n";
+		file << "MBRRRRRRRBIIIIIIIIIIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNBGBCCCC\n";
 		for(i = 0; i<clients.size() ; i++){
-			file << '_' << "0000000 " << clients.at(i).getId_client() << ' ' << setfill(' ') << setw(40) << clients.at(i).getName() << ' ' << clients.at(i).getGender() << ' ' << setfill('0') << setw(4) << clients.at(i).getId_city()<<"\n";
+			file << "_ " << "        " << clients.at(i).getId_client() << ' ' << setfill(' ') << setw(40) << clients.at(i).getName() << ' ' << clients.at(i).getGender() << ' ' << setfill('0') << setw(4) << clients.at(i).getId_city()<<"\n";
 		}
 		file.close();
 	}else{
@@ -67,8 +86,19 @@ void saveFiles(vector<city> cities, vector<client> clients, vector<call> calls, 
 
 	file.open("calls_vector.txt");
 	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " N:Number\n";
+		file << " S:Start\n";
+		file << " E:End\n";
+		file << " D:Destination\n";
+		file << "MBRRRRRRRBNNNNNNNNBSSSSSSSSSSSSSSBEEEEEEEEEEEEEEBDDDDDDDD\n";
 		for(i = 0; i<calls.size() ; i++){
-			file << '_' << "0000000 "<< calls.at(i).getNumber() << ' '<< calls.at(i).getStart() << ' '<< calls.at(i).getEnd() << ' '<< calls.at(i).getDestination() << "\n";
+			file << "_ " << "        "<< calls.at(i).getNumber() << ' '<< calls.at(i).getStart() << ' '<< calls.at(i).getEnd() << ' '<< calls.at(i).getDestination() << "\n";
 		}
 		file.close();
 	}else{
@@ -78,8 +108,17 @@ void saveFiles(vector<city> cities, vector<client> clients, vector<call> calls, 
 	
 	file.open("phones_vector.txt");
 	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " N:Number\n";
+		file << " I:Client_ID\n";
+		file << "MBRRRRRRRBNNNNNNNNBIIIIIIIIIIIII\n";
 		for(i = 0; i<phones.size() ; i++){
-			file << '_' << "0000000 " << phones.at(i).getNumber() << ' ' << phones.at(i).getId_client()<< "\n";
+			file << "_ " << "        " << phones.at(i).getNumber() << ' ' << phones.at(i).getId_client()<< "\n";
 		}
 		file.close();
 	}else{
