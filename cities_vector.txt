@@ -1,0 +1,30 @@
+_0000000 0101                                La Ceiba
+_0000000 0107                                    Tela
+_0000000 0201                                Trujillo
+_0000000 0301                               Comayagua
+_0000000 0306                             La Libertad
+_0000000 0308                             La Trinidad
+_0000000 0318                            Siguatepeque
+_0000000 0318                            Siguatepeque
+_0000000 0401                    Santa Rosa de Copán
+_0000000 0404                           Copán Ruinas
+_0000000 0409                             El Paraíso
+_0000000 0415                             San Antonio
+_0000000 0501                          San Pedro Sula
+_0000000 0506                          Puerto Cortés
+_0000000 0505                             Potrerillos
+_0000000 0502                                 Choloma
+_0000000 0601                               Choluteca
+_0000000 0701                               Yuscarán
+_0000000 0801                        Tegucigalpa D.C.
+_0000000 0823                             Santa Lucia
+_0000000 0826                        Valle de Angeles
+_0000000 0901                          Puerto Lempira
+_0000000 1001                            La Esperanza
+_0000000 1101                                 Roatán
+_0000000 1104                                   Utila
+_0000000 1201                                  La Paz
+_0000000 1401                        Nueva Ocotepeque
+_0000000 1501                               Juticalpa
+_0000000 1601                          Santa Bárbara
+_0000000 1701                                 Nacaome

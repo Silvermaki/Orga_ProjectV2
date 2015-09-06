@@ -1,0 +1,60 @@
+La Ceiba
+0101
+Tela
+0107
+Trujillo
+0201
+Comayagua
+0301
+La Libertad
+0306
+La Trinidad
+0308
+Siguatepeque
+0318
+Siguatepeque
+0318
+Santa Rosa de Copán
+0401
+Copán Ruinas
+0404
+El Paraíso
+0409
+San Antonio
+0415
+San Pedro Sula
+0501
+Puerto Cortés
+0506
+Potrerillos
+0505
+Choloma
+0502
+Choluteca
+0601
+Yuscarán
+0701
+Tegucigalpa D.C.
+0801
+Santa Lucia
+0823
+Valle de Angeles
+0826
+Puerto Lempira
+0901
+La Esperanza
+1001
+Roatán
+1101
+Utila
+1104
+La Paz
+1201
+Nueva Ocotepeque
+1401
+Juticalpa
+1501
+Santa Bárbara
+1601
+Nacaome
+1701
