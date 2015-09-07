@@ -24,6 +24,8 @@ class city{
 	void availAdd(city);
 	string toString();
 	void saveFile(vector<city>);
+	void availList();
+	void availModify(city, int);
 	void reIndex();
 };
 

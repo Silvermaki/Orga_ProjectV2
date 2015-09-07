@@ -151,6 +151,53 @@ void phone::saveFile(vector<phone> phones){
 	}
 }
 
+void phone::availList(){
+	fstream is("phones_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		int rrn=1;//rrn counter
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+	    int length = is.tellg();//Save the value to a variable.
+	    do{
+	    	int offset=110+rrn*33;//calculate offset for the current value.
+	    	is.seekg(offset);//Move the get cursor to the current offset.
+	    	char* mark = new char;//Save the mark
+	    	is.read(mark,1);
+	    	if(*mark == '_'){//Check if mark states registry is not deleted
+	    		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
+	    		char * buffer = new char(23);//Buffer to store the registry.
+	    		is.read(buffer,23);//Save into buffer.
+	    		cout << buffer;//List.
+	    	}
+	    	rrn++;
+		}while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
+		is.close();
+	}else{
+		cout << "Error opening file -phones_vector.txt- \n";
+	}
+}
+
+void phone::availModify(phone x, int rrn){
+	fstream is("phones_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		char * buffer = new char;
+		int offset=110+rrn*33;//calculate offset.
+		is.seekg(offset);//Move get cursor to offset.
+		is.read(buffer,1);//Read 1 byte
+		if(*buffer == '_'){//Check if already deleted.
+			is.seekp(offset);
+			stringstream ss2;
+			ss2 << "_ " << "        " << x.getNumber() << ' ' << x.getId_client()<< "\n";//Save added phone to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),33);//Rewrite value.
+		}else{
+			cout << "Invalid value, registry does not exist or is already deleted -phones_vector.txt- \n";
+		}
+		is.close();
+	}else{
+		cout << "Could not open file -phones_vector.txt- \n";
+	}
+}
+
 string phone::toString(){
 	stringstream ss;
 	ss << number << "\t" << id_client;

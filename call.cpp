@@ -204,7 +204,6 @@ void call::saveFile(vector<call> calls){
 	}else{
 		cout << "Error opening file -calls_vector.txt- \n";
 	}
-
 }
 
 string call::toString(){

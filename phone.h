@@ -24,6 +24,8 @@ class phone{
     void availAdd(phone);
     void availDelete(int);
     void saveFile(vector<phone>);
+    void availList();
+    void availModify(phone, int);
   	string toString();
 };
 

@@ -123,6 +123,53 @@ void city::availAdd(city x){
 	}
 }
 
+void city::availList(){
+	fstream is("cities_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		int rrn=1;//rrn counter
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+	    int length = is.tellg();//Save the value to a variable.
+	    do{
+	    	int offset=111+rrn*55;//calculate offset for the current value.
+	    	is.seekg(offset);//Move the get cursor to the current offset.
+	    	char* mark = new char;//Save the mark
+	    	is.read(mark,1);
+	    	if(*mark == '_'){//Check if mark states registry is not deleted
+	    		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
+	    		char * buffer = new char(45);//Buffer to store the registry.
+	    		is.read(buffer,45);//Save into buffer.
+	    		cout << buffer;//List.
+	    	}
+	    	rrn++;
+		}while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
+		is.close();
+	}else{
+		cout << "Could not open file -cities_vector.txt- \n";
+	}
+}
+
+void city::availModify(city x, int rrn){
+	fstream is("cities_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		char * buffer = new char;
+		int offset=111+rrn*55;//calculate offset.
+		is.seekg(offset);//Move get cursor to offset.
+		is.read(buffer,1);//Read 1 byte
+		if(*buffer == '_'){//Check if already deleted.
+			is.seekp(offset);
+			stringstream ss2;
+			ss2 << "_ " << "        " <<setfill('0') << setw(4) << x.getId_city() << setfill(' ') << setw(40) << x.getName()<<"\n";//Save added city to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),55);//Rewrite value.
+		}else{
+			cout << "Invalid value, registry does not exist or is already deleted -cities_vector.txt- \n";
+		}
+		is.close();
+	}else{
+		cout << "Could not open file -cities_vector.txt- \n";
+	}
+}
+
 void city::reIndex(){
 	fstream is("cities_vector.txt");//Open the file to index.
 	ofstream index;
@@ -139,10 +186,11 @@ void city::reIndex(){
     		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
     		char * buffer = new char(4);//Buffer to store the seeked value ID.
     		is.read(buffer,4);//Save into buffer.
-    		index.write(buffer,4);
     		stringstream ss;//Create stream to manage fixed size
     		ss << setfill(' ') << setw(9) << rrn << "\n";//create fixe sized 10 rrn for file managing
     		string temp = ss.str();//Cast stream
+
+    		index.write(buffer,4);
     		index.write(temp.c_str(),10);//Write to index file.
     	}
     	rrn++;

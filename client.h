@@ -34,6 +34,8 @@ class client{
 	void availDelete(int);
 	void availAdd(client);
 	void saveFile(vector<client>);
+	void availList();
+	void availModify(client, int);
 	string toString();
 };
 

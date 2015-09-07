@@ -23,6 +23,11 @@ int main(int argc, char* argv[]){
 	call call1;
 	city city1;
 	client client1;
+
+	city1.availList();
+	phone1.availList();
+	client1.availList();
+
 	return 0;
 }
 //////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////

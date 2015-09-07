@@ -196,6 +196,53 @@ void client::saveFile(vector<client> clients){
 	}
 }
 
+void client::availList(){
+	fstream is("clients_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		int rrn=1;//rrn counter
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+	    int length = is.tellg();//Save the value to a variable.
+	    do{
+	    	int offset=136+rrn*72;//calculate offset for the current value.
+	    	is.seekg(offset);//Move the get cursor to the current offset.
+	    	char* mark = new char;//Save the mark
+	    	is.read(mark,1);
+	    	if(*mark == '_'){//Check if mark states registry is not deleted
+	    		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
+	    		char * buffer = new char(62);//Buffer to store the registry.
+	    		is.read(buffer,62);//Save into buffer.
+	    		cout << buffer;//List.
+	    	}
+	    	rrn++;
+		}while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
+		is.close();
+	}else{
+		cout << "Error opening file -clients_vector.txt- \n";
+	}
+}
+
+void client::availModify(client x, int rrn){
+	fstream is("clients_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		char * buffer = new char;
+		int offset=136+rrn*72;//calculate offset.
+		is.seekg(offset);//Move get cursor to offset.
+		is.read(buffer,1);//Read 1 byte
+		if(*buffer == '_'){//Check if already deleted.
+			is.seekp(offset);
+			stringstream ss2;
+			ss2 << "_ " << "        " << x.getId_client() << ' ' << setfill(' ') << setw(40) << x.getName() << ' ' << x.getGender() << ' ' << setfill('0') << setw(4) << x.getId_city()<<"\n";//Save added client to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),72);//Rewrite value.
+		}else{
+			cout << "Invalid value, registry does not exist or is already deleted -clients_vector.txt- \n";
+		}
+		is.close();
+	}else{
+		cout << "Could not open file -clients_vector.txt- \n";
+	}
+}
+
 string client::toString(){
 	stringstream ss;
 	ss << id_client << "\t" << name << "\t" << gender << "\t" << id_city;
