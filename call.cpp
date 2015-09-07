@@ -180,6 +180,31 @@ void call::availAdd(call x){
 	}
 }
 
+void call::saveFile(vector<call> calls){
+	int i;
+	ofstream file("calls_vector.txt");
+	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " N:Number\n";
+		file << " S:Start\n";
+		file << " E:End\n";
+		file << " D:Destination\n";
+		file << "MBRRRRRRRBNNNNNNNNBSSSSSSSSSSSSSSBEEEEEEEEEEEEEEBDDDDDDDD\n";
+		for(i = 0; i<calls.size() ; i++){
+			file << "_ " << "        "<< calls.at(i).getNumber() << ' '<< calls.at(i).getStart() << ' '<< calls.at(i).getEnd() << ' '<< calls.at(i).getDestination() << "\n";
+		}
+		file.close();
+	}else{
+		cout << "Error opening file -calls_vector.txt-";
+	}
+
+}
+
 string call::toString(){
 	stringstream ss;
 	ss << number << "\t" << start<< "\t" << end << "\t" << destination;

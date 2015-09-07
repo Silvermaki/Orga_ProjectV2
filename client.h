@@ -31,6 +31,9 @@ class client{
 	vector<string> createNames();
 	vector<string> idtoString(vector<int>);
 	vector<client> clientVector(vector<string>, vector<string>, vector<city>);
+	void availDelete(int);
+	void availAdd(client);
+	void saveFile(vector<client>);
 	string toString();
 };
 

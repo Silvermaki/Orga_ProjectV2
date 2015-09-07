@@ -32,6 +32,7 @@ class call{
 	  vector<long> endLong(vector<int>);
     void availAdd(call);
     void availDelete(int);
+    void saveFile(vector<call>);
   	string toString();
 };
 

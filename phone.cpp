@@ -1,4 +1,5 @@
 #include "phone.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -56,6 +57,95 @@ vector<phone> phone::phoneVector(vector<int> numbers, vector<string> ids){
 		temp.push_back(phone(numbers.at(i), ids.at(i)));
 	}
 	return temp;
+}
+
+void phone::availDelete(int rrn){
+	fstream is("cities_vector.txt");
+	if(is.is_open()){
+		char * buffer = new char;
+		int offset=110+rrn*33;//calculate offset.
+		is.seekg(offset);//Move get cursor to offset.
+		is.read(buffer,1);//Read 1 byte
+		if(*buffer == '_'){//Check if already deleted.
+			delete[] buffer;
+			is.seekp(offset);//Move the put cursor towards the deleted registry.
+			is.write("*",1);//Mark the registry as deleted.
+			is.seekg(11);//Move the get cursor to the old value from the avail list header.
+			char * buffer2 = new char(7);
+			is.read(buffer2,7);//Save the value to a buffer.
+			stringstream ss;
+			ss << setfill(' ') << setw(7) << rrn;
+			string temp = ss.str();//Save the new value for the avail list header.
+			is.seekp(11);//Move the put cursor to the avail list header.
+			is.write(temp.c_str(),7);//Overwrite avail list header.
+			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
+			is.write(buffer2,7);//Overwrite it with the old value of the avail list header.
+			delete[] buffer2;
+			
+		}else{
+			cout << "Invalid value, registry does not exist or is already deleted.";
+		}
+		is.close();	
+	}else{
+		cout << "Could not open file -cities_vector.txt";
+	}
+}
+
+void phone::availAdd(phone x){
+	fstream is("cities_vector.txt");
+	if(is.is_open()){
+		char * buffer = new char(7);
+		is.seekg(11);//Move get cursor to avail list header
+		is.read(buffer,7);//Save avail list value
+		stringstream ss;
+		ss << buffer;
+		string temp = ss.str();
+		if(temp=="      0"){//Check if avail list header is empty
+			is.seekp(0,ios_base::end);//Move to the end of the file
+			stringstream ss2;
+			ss2 << "_ " << "        " << x.getNumber() << ' ' << x.getId_client()<< "\n";//Save added city to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),33);//Append added city
+		}else{
+			int rrn = atoi(temp.c_str());
+			int offset=110+rrn*33;//calculate offset.
+			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
+			char * buffer2 = new char(7);
+			is.read(buffer2,7);//Save the value to a buffer.
+			is.seekp(11);//Move the put cursor to the avail list header.
+			is.write(buffer2,7);//Overwrite avail list header.
+			is.seekp(offset);//Move back to offset.
+			stringstream ss2;
+			ss2 << "_ " << "        " << x.getNumber() << ' ' << x.getId_client()<< "\n";//Save added phone to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),33);//Rewrite value.
+		}
+		is.close();
+	}else{
+		cout << "Could not open file -cities_vector.txt";
+	}
+}
+
+void phone::saveFile(vector<phone> phones){
+	int i;
+	ofstream file("phones_vector.txt");
+	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " N:Number\n";
+		file << " I:Client_ID\n";
+		file << "MBRRRRRRRBNNNNNNNNBIIIIIIIIIIIII\n";
+		for(i = 0; i<phones.size() ; i++){
+			file << "_ " << "        " << phones.at(i).getNumber() << ' ' << phones.at(i).getId_client()<< "\n";
+		}
+		file.close();
+	}else{
+		cout << "Error opening file -phones_vector.txt-";
+	}
 }
 
 string phone::toString(){

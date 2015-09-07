@@ -23,6 +23,7 @@ class city{
 	void availDelete(int);
 	void availAdd(city);
 	string toString();
+	void saveFile(vector<city>);
 	void reIndex();
 };
 

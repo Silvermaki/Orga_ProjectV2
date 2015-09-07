@@ -103,6 +103,97 @@ vector<string> client::idtoString(vector<int> ids){
 	return str_id;
 }
 
+void client::availDelete(int rrn){
+	fstream is("clients_vector.txt");
+	if(is.is_open()){
+		char * buffer = new char;
+		int offset=136+rrn*72;//calculate offset.
+		is.seekg(offset);//Move get cursor to offset.
+		is.read(buffer,1);//Read 1 byte
+		if(*buffer == '_'){//Check if already deleted.
+			delete[] buffer;
+			is.seekp(offset);//Move the put cursor towards the deleted registry.
+			is.write("*",1);//Mark the registry as deleted.
+			is.seekg(11);//Move the get cursor to the old value from the avail list header.
+			char * buffer2 = new char(7);
+			is.read(buffer2,7);//Save the value to a buffer.
+			stringstream ss;
+			ss << setfill(' ') << setw(7) << rrn;
+			string temp = ss.str();//Save the new value for the avail list header.
+			is.seekp(11);//Move the put cursor to the avail list header.
+			is.write(temp.c_str(),7);//Overwrite avail list header.
+			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
+			is.write(buffer2,7);//Overwrite it with the old value of the avail list header.
+			delete[] buffer2;
+			
+		}else{
+			cout << "Invalid value, registry does not exist or is already deleted.";
+		}
+		is.close();	
+	}else{
+		cout << "Could not open file -clients_vector.txt";
+	}
+}
+
+void client::availAdd(client x){
+	fstream is("clients_vector.txt");
+	if(is.is_open()){
+		char * buffer = new char(7);
+		is.seekg(11);//Move get cursor to avail list header
+		is.read(buffer,7);//Save avail list value
+		stringstream ss;
+		ss << buffer;
+		string temp = ss.str();
+		if(temp=="      0"){//Check if avail list header is empty
+			is.seekp(0,ios_base::end);//Move to the end of the file
+			stringstream ss2;
+			ss2 << "_ " << "        " << x.getId_client() << ' ' << setfill(' ') << setw(40) << x.getName() << ' ' << x.getGender() << ' ' << setfill('0') << setw(4) << x.getId_city()<<"\n";//Save added client to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),72);//Append added city
+		}else{
+			int rrn = atoi(temp.c_str());
+			int offset=136+rrn*72;//calculate offset.
+			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
+			char * buffer2 = new char(7);
+			is.read(buffer2,7);//Save the value to a buffer.
+			is.seekp(11);//Move the put cursor to the avail list header.
+			is.write(buffer2,7);//Overwrite avail list header.
+			is.seekp(offset);//Move back to offset.
+			stringstream ss2;
+			ss2 << "_ " << "        " << x.getId_client() << ' ' << setfill(' ') << setw(40) << x.getName() << ' ' << x.getGender() << ' ' << setfill('0') << setw(4) << x.getId_city()<<"\n";//Save added client to stream
+			string temp2 = ss2.str();
+			is.write(temp2.c_str(),72);//Rewrite value.
+		}
+		is.close();
+	}else{
+		cout << "Could not open file -clients_vector.txt.txt";
+	}
+}
+
+void client::saveFile(vector<client> clients){
+	int i;
+	ofstream file("clients_vector.txt");
+	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " I:Client_ID\n";
+		file << " N:Client_Name\n";
+		file << " G:Gender\n";
+		file << " C:City_ID\n";
+		file << "MBRRRRRRRBIIIIIIIIIIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNBGBCCCC\n";
+		for(i = 0; i<clients.size() ; i++){
+			file << "_ " << "        " << clients.at(i).getId_client() << ' ' << setfill(' ') << setw(40) << clients.at(i).getName() << ' ' << clients.at(i).getGender() << ' ' << setfill('0') << setw(4) << clients.at(i).getId_city()<<"\n";
+		}
+		file.close();
+	}else{
+		cout << "Error opening file -clients_vector.txt-";
+	}
+}
+
 string client::toString(){
 	stringstream ss;
 	ss << id_client << "\t" << name << "\t" << gender << "\t" << id_city;

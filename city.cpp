@@ -149,6 +149,28 @@ void city::reIndex(){
 	index.close();
 }
 
+void city::saveFile(vector<city> cities){
+	ofstream file("cities_vector.txt");
+	int i;
+	if(file.is_open()){
+		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
+		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
+		file << "Structure:\n";
+		file << " M:Marked\n";
+		file << " B:Blank_Space\n";
+		file << " R:Reference\n";
+		file << " I:City_ID\n";
+		file << " N:City_Name\n";
+		file << "MBRRRRRRRBIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n";
+		for(i = 0; i<cities.size() ; i++){
+			file << "_ " << "        " <<setfill('0') << setw(4) << cities.at(i).getId_city() << setfill(' ') << setw(40) << cities.at(i).getName()<<"\n";
+		}
+		file.close();
+	}else{
+		cout << "Error opening file -cities_vector.txt-";
+	}
+}
+
 string city::toString(){
 	stringstream ss;
 	ss << id_city << "\t" << name;

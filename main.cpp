@@ -13,11 +13,18 @@
 
 using namespace std;
 
-void saveFiles(vector<city>, vector<client>, vector<call>, vector<phone>);
+void saveFiles(vector<city>, vector<client>, vector<phone>, vector<call>);
+void init_Files();
 
 int main(int argc, char* argv[]){
-	//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////
-	/*
+	/*****Create Files, Un-comment if you need to re-make the original files.*****/
+	//init_Files();
+
+
+	return 0;
+}
+//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////
+void init_Files(){
 	srand(time(NULL));
 	phone temp;
 	call temp2;
@@ -35,95 +42,17 @@ int main(int argc, char* argv[]){
 	vector<client> client_list = temp6.clientVector(sid_list, name_list, city_list);
 	vector<call> call_list = temp2.callVector(numbers_list, starts_long, ends_long);
 	vector<phone> phone_list = temp.phoneVector(numbers_list, sid_list);
-	saveFiles(city_list, client_list, call_list, phone_list);
-	*/
-	//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -END-////////////////////////////////////////////
-	city lol;
-	lol.reIndex();
-	return 0;
+	saveFiles(city_list, client_list, phone_list, call_list);
 }
 
-void saveFiles(vector<city> cities, vector<client> clients, vector<call> calls, vector<phone> phones){
-	ofstream file("cities_vector.txt");
-	int i;
-	if(file.is_open()){
-		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
-		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
-		file << "Structure:\n";
-		file << " M:Marked\n";
-		file << " B:Blank_Space\n";
-		file << " R:Reference\n";
-		file << " I:City_ID\n";
-		file << " N:City_Name\n";
-		file << "MBRRRRRRRBIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n";
-		for(i = 0; i<cities.size() ; i++){
-			file << "_ " << "        " <<setfill('0') << setw(4) << cities.at(i).getId_city() << setfill(' ') << setw(40) << cities.at(i).getName()<<"\n";
-		}
-		file.close();
-	}else{
-		cout << "Error opening file -cities_vector.txt-";
-	}
-	
-	file.open("clients_vector.txt");
-	if(file.is_open()){
-		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
-		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
-		file << "Structure:\n";
-		file << " M:Marked\n";
-		file << " B:Blank_Space\n";
-		file << " R:Reference\n";
-		file << " I:Client_ID\n";
-		file << " N:Client_Name\n";
-		file << " G:Gender\n";
-		file << " C:City_ID\n";
-		file << "MBRRRRRRRBIIIIIIIIIIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNBGBCCCC\n";
-		for(i = 0; i<clients.size() ; i++){
-			file << "_ " << "        " << clients.at(i).getId_client() << ' ' << setfill(' ') << setw(40) << clients.at(i).getName() << ' ' << clients.at(i).getGender() << ' ' << setfill('0') << setw(4) << clients.at(i).getId_city()<<"\n";
-		}
-		file.close();
-	}else{
-		cout << "Error opening file -clients_vector.txt-";
-	}
-
-
-	file.open("calls_vector.txt");
-	if(file.is_open()){
-		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
-		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
-		file << "Structure:\n";
-		file << " M:Marked\n";
-		file << " B:Blank_Space\n";
-		file << " R:Reference\n";
-		file << " N:Number\n";
-		file << " S:Start\n";
-		file << " E:End\n";
-		file << " D:Destination\n";
-		file << "MBRRRRRRRBNNNNNNNNBSSSSSSSSSSSSSSBEEEEEEEEEEEEEEBDDDDDDDD\n";
-		for(i = 0; i<calls.size() ; i++){
-			file << "_ " << "        "<< calls.at(i).getNumber() << ' '<< calls.at(i).getStart() << ' '<< calls.at(i).getEnd() << ' '<< calls.at(i).getDestination() << "\n";
-		}
-		file.close();
-	}else{
-		cout << "Error opening file -calls_vector.txt-";
-	}
-
-	
-	file.open("phones_vector.txt");
-	if(file.is_open()){
-		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
-		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
-		file << "Structure:\n";
-		file << " M:Marked\n";
-		file << " B:Blank_Space\n";
-		file << " R:Reference\n";
-		file << " N:Number\n";
-		file << " I:Client_ID\n";
-		file << "MBRRRRRRRBNNNNNNNNBIIIIIIIIIIIII\n";
-		for(i = 0; i<phones.size() ; i++){
-			file << "_ " << "        " << phones.at(i).getNumber() << ' ' << phones.at(i).getId_client()<< "\n";
-		}
-		file.close();
-	}else{
-		cout << "Error opening file -phones_vector.txt-";
-	}
+void saveFiles(vector<city> cities, vector<client> clients, vector<phone> phones,vector<call> calls){
+	city city_ref;
+	city_ref.saveFile(cities);
+	client client_ref;
+	client_ref.saveFile(clients);
+	call call_ref;
+	call_ref.saveFile(calls);
+	phone phone_ref;
+	phone_ref.saveFile(phones);
 }
+//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -END-////////////////////////////////////////////

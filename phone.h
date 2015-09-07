@@ -21,6 +21,9 @@ class phone{
   	void setId_client(string);
   	vector<int> createNumbers(int);
   	vector<phone> phoneVector(vector<int>, vector<string>);
+    void availAdd(phone);
+    void availDelete(int);
+    void saveFile(vector<phone>);
   	string toString();
 };
 
