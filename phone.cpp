@@ -129,7 +129,7 @@ void phone::availAdd(phone x){
 	}
 }
 
-void client::reIndex(){
+void phone::reIndex(){
 	fstream is("phones_vector.txt");//Open the file to index.
 	ofstream index;
 	index.open("phones_index.txt");

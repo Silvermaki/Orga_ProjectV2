@@ -182,10 +182,10 @@ void call::availAdd(call x){
 	}
 }
 
-void client::reIndex(){
-	fstream is("clients_vector.txt");//Open the file to index.
+void call::reIndex(){
+	fstream is("calls_vector.txt");//Open the file to index.
 	ofstream index;
-	index.open("clients_index.txt");
+	index.open("calls_index.txt");
 	int rrn=1;//rrn counter
 	is.seekg (0, is.end);//Move get cursor to the end of file.
     int length = is.tellg();//Save the value to a variable.

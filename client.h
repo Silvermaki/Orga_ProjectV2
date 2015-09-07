@@ -36,6 +36,7 @@ class client{
 	void saveFile(vector<client>);
 	void availList();
 	void availModify(client, int);
+	void reIndex();
 	string toString();
 };
 

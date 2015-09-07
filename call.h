@@ -33,6 +33,7 @@ class call{
     void availAdd(call);
     void availDelete(int);
     void saveFile(vector<call>);
+    void reIndex();
   	string toString();
 };
 

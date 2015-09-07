@@ -26,6 +26,7 @@ class phone{
     void saveFile(vector<phone>);
     void availList();
     void availModify(phone, int);
+    void reIndex();
   	string toString();
 };
 
