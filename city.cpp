@@ -2,6 +2,8 @@
 //city.size = 55
 #include "city.h"
 #include <iomanip>
+#include <string.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -177,6 +179,7 @@ void city::reIndex(){
 	int rrn=1;//rrn counter
 	is.seekg (0, is.end);//Move get cursor to the end of file.
     int length = is.tellg();//Save the value to a variable.
+    vector<pair<string,string> > index_list;//Index vector of pairs.
     do{
     	int offset=111+rrn*55;//calculate offset for the current value.
     	is.seekg(offset);//Move the get cursor to the current offset.
@@ -189,12 +192,17 @@ void city::reIndex(){
     		stringstream ss;//Create stream to manage fixed size
     		ss << setfill(' ') << setw(9) << rrn << "\n";//create fixe sized 10 rrn for file managing
     		string temp = ss.str();//Cast stream
+    		string str(buffer,4);
+    		index_list.push_back(make_pair(str,temp));
 
-    		index.write(buffer,4);
-    		index.write(temp.c_str(),10);//Write to index file.
     	}
     	rrn++;
     }while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
+    sort(index_list.begin(),index_list.end());//Sort index alphabetically.
+    int i;
+    for(int i=0;i<index_list.size();i++){
+    	index << index_list[i].first << index_list[i].second;//Copy to File.
+    }
     is.close();
 	index.close();
 }

@@ -1,6 +1,7 @@
 //clients_vector header.size() = 136
 //client.size = 72
 #include "client.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -172,9 +173,6 @@ void client::availAdd(client x){
 	}
 }
 
-//clients_vector header.size() = 136
-//client.size = 72
-
 void client::reIndex(){
 	fstream is("clients_vector.txt");//Open the file to index.
 	ofstream index;
@@ -182,6 +180,7 @@ void client::reIndex(){
 	int rrn=1;//rrn counter
 	is.seekg (0, is.end);//Move get cursor to the end of file.
     int length = is.tellg();//Save the value to a variable.
+    vector<pair<string,string> > index_list;//Index vector of pairs.
     do{
     	int offset=136+rrn*72;//calculate offset for the current value.
     	is.seekg(offset);//Move the get cursor to the current offset.
@@ -191,14 +190,19 @@ void client::reIndex(){
     		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
     		char * buffer = new char(13);//Buffer to store the seeked value ID.
     		is.read(buffer,13);//Save into buffer.
-    		index.write(buffer,13);
     		stringstream ss;//Create stream to manage fixed size
     		ss << setfill(' ') << setw(9) << rrn << "\n";//create fixe sized 14 rrn for file managing
     		string temp = ss.str();//Cast stream
-    		index.write(temp.c_str(),10);//Write to index file.
+    		string str(buffer,13);
+    		index_list.push_back(make_pair(str,temp));
     	}
     	rrn++;
     }while(rrn!=(length-136)/72);//While the rrn is not equal to length - header size divided by the registry length.
+    sort(index_list.begin(),index_list.end());//Sort index alphabetically.
+    int i;
+    for(int i=0;i<index_list.size();i++){
+    	index << index_list[i].first << index_list[i].second;//Copy to File.
+    }
     is.close();
 	index.close();
 }

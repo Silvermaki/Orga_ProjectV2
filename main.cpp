@@ -9,12 +9,12 @@
 #include "call.h"
 #include "city.h"
 #include "client.h"
-#include <iomanip>
 
 using namespace std;
 
 void saveFiles(vector<city>, vector<client>, vector<phone>, vector<call>);
 void init_Files();
+void saveIndexes();
 
 int main(int argc, char* argv[]){
 	/*****Create Files, Un-comment if you need to re-make the original files.*****/
@@ -46,6 +46,19 @@ void init_Files(){
 	vector<call> call_list = temp2.callVector(numbers_list, starts_long, ends_long);
 	vector<phone> phone_list = temp.phoneVector(numbers_list, sid_list);
 	saveFiles(city_list, client_list, phone_list, call_list);
+	saveIndexes();
+
+}
+
+void saveIndexes(){
+	city city_ref;
+	city_ref.reIndex();
+	client client_ref;
+	client_ref.reIndex();
+	call call_ref;
+	call_ref.reIndex();
+	phone phone_ref;
+	phone_ref.reIndex();
 }
 
 void saveFiles(vector<city> cities, vector<client> clients, vector<phone> phones,vector<call> calls){

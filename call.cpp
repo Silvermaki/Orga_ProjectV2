@@ -2,6 +2,7 @@
 //call.size = 58
 #include "call.h"
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
@@ -189,6 +190,7 @@ void call::reIndex(){
 	int rrn=1;//rrn counter
 	is.seekg (0, is.end);//Move get cursor to the end of file.
     int length = is.tellg();//Save the value to a variable.
+    vector<pair<string,string> > index_list;//Index vector of pairs.
     do{
     	int offset=128+rrn*58;//calculate offset for the current value.
     	is.seekg(offset);//Move the get cursor to the current offset.
@@ -198,14 +200,19 @@ void call::reIndex(){
     		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
     		char * buffer = new char(8);//Buffer to store the seeked value ID.
     		is.read(buffer,8);//Save into buffer.
-    		index.write(buffer,8);
     		stringstream ss;//Create stream to manage fixed size
     		ss << setfill(' ') << setw(9) << rrn << "\n";//create fixe sized 9 rrn for file managing
     		string temp = ss.str();//Cast stream
-    		index.write(temp.c_str(),10);//Write to index file.
+    		string str(buffer,8);
+    		index_list.push_back(make_pair(str,temp));
     	}
     	rrn++;
     }while(rrn!=(length-128)/58);//While the rrn is not equal to length - header size divided by the registry length.
+    sort(index_list.begin(),index_list.end());//Sort index alphabetically.
+    int i;
+    for(int i=0;i<index_list.size();i++){
+    	index << index_list[i].first << index_list[i].second;//Copy to File.
+    }
     is.close();
 	index.close();
 }
