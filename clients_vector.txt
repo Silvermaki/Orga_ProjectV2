@@ -1,4 +1,4 @@
-Avail_head:      0
+Avail_head:     17
 Re-index:        0
 Structure:
  M:Marked
@@ -25,7 +25,7 @@ _         0122195221969                             Karan Maheux F 0201
 _         0625190805933                            Stacia Zepeda F 1501
 _         1541198582143                          Verline Feltman F 1104
 _         0640196829439                            Nadine Steven F 1701
-_         1510197521945                              Eusebia Mok M 0826
+*       0 1510197521945                              Eusebia Mok M 0826
 _         1445197244759                            Hulda Ebright F 0301
 _         1139197512018                              Ninfa Dahms M 0318
 _         0831191922932                            Justin Cambra M 0401

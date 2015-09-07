@@ -1,3 +1,5 @@
+//cities_vector header.size() = 111
+//city.size = 55
 #include "city.h"
 #include <iomanip>
 
@@ -78,11 +80,11 @@ void city::availDelete(int rrn){
 			delete[] buffer2;
 			
 		}else{
-			cout << "Invalid value, registry does not exist or is already deleted.";
+			cout << "Invalid value, registry does not exist or is already deleted -cities_vector.txt- \n";
 		}
 		is.close();	
 	}else{
-		cout << "Could not open file -cities_vector.txt";
+		cout << "Could not open file -cities_vector.txt- \n";
 	}
 }
 
@@ -117,7 +119,7 @@ void city::availAdd(city x){
 		}
 		is.close();
 	}else{
-		cout << "Could not open file -cities_vector.txt";
+		cout << "Could not open file -cities_vector.txt- \n";
 	}
 }
 
@@ -167,7 +169,7 @@ void city::saveFile(vector<city> cities){
 		}
 		file.close();
 	}else{
-		cout << "Error opening file -cities_vector.txt-";
+		cout << "Error opening file -cities_vector.txt- \n";
 	}
 }
 

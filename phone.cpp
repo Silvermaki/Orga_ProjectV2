@@ -1,3 +1,5 @@
+//phones_vector header.size() = 110
+//phone.size = 33
 #include "phone.h"
 #include <iomanip>
 
@@ -60,12 +62,13 @@ vector<phone> phone::phoneVector(vector<int> numbers, vector<string> ids){
 }
 
 void phone::availDelete(int rrn){
-	fstream is("cities_vector.txt");
+	fstream is("phones_vector.txt");
 	if(is.is_open()){
 		char * buffer = new char;
 		int offset=110+rrn*33;//calculate offset.
 		is.seekg(offset);//Move get cursor to offset.
 		is.read(buffer,1);//Read 1 byte
+		cout << buffer;
 		if(*buffer == '_'){//Check if already deleted.
 			delete[] buffer;
 			is.seekp(offset);//Move the put cursor towards the deleted registry.
@@ -83,16 +86,16 @@ void phone::availDelete(int rrn){
 			delete[] buffer2;
 			
 		}else{
-			cout << "Invalid value, registry does not exist or is already deleted.";
+			cout << "Invalid value, registry does not exist or is already deleted -phones_vector.txt- \n";
 		}
 		is.close();	
 	}else{
-		cout << "Could not open file -cities_vector.txt";
+		cout << "Could not open file -phones_vector.txt- \n";
 	}
 }
 
 void phone::availAdd(phone x){
-	fstream is("cities_vector.txt");
+	fstream is("phones_vector.txt");
 	if(is.is_open()){
 		char * buffer = new char(7);
 		is.seekg(11);//Move get cursor to avail list header
@@ -122,7 +125,7 @@ void phone::availAdd(phone x){
 		}
 		is.close();
 	}else{
-		cout << "Could not open file -cities_vector.txt";
+		cout << "Could not open file -phones_vector.txt- \n";
 	}
 }
 
@@ -144,7 +147,7 @@ void phone::saveFile(vector<phone> phones){
 		}
 		file.close();
 	}else{
-		cout << "Error opening file -phones_vector.txt-";
+		cout << "Error opening file -phones_vector.txt- \n";
 	}
 }
 

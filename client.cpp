@@ -1,3 +1,5 @@
+//clients_vector header.size() = 136
+//client.size = 72
 #include "client.h"
 
 using namespace std;
@@ -127,11 +129,11 @@ void client::availDelete(int rrn){
 			delete[] buffer2;
 			
 		}else{
-			cout << "Invalid value, registry does not exist or is already deleted.";
+			cout << "Invalid value, registry does not exist or is already deleted -clients_vector.txt- \n";
 		}
 		is.close();	
 	}else{
-		cout << "Could not open file -clients_vector.txt";
+		cout << "Could not open file -clients_vector.txt- \n";
 	}
 }
 
@@ -166,7 +168,7 @@ void client::availAdd(client x){
 		}
 		is.close();
 	}else{
-		cout << "Could not open file -clients_vector.txt.txt";
+		cout << "Could not open file -clients_vector.txt.txt- \n";
 	}
 }
 
@@ -190,7 +192,7 @@ void client::saveFile(vector<client> clients){
 		}
 		file.close();
 	}else{
-		cout << "Error opening file -clients_vector.txt-";
+		cout << "Error opening file -clients_vector.txt- \n";
 	}
 }
 

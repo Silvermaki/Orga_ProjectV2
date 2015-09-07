@@ -1,3 +1,5 @@
+//calls_vector header.size() = 128
+//call.size = 58
 #include "call.h"
 #include <iomanip>
 
@@ -137,11 +139,11 @@ void call::availDelete(int rrn){
 			delete[] buffer2;
 			
 		}else{
-			cout << "Invalid value, registry does not exist or is already deleted.";
+			cout << "Invalid value, registry does not exist or is already deleted -calls_vector.txt- \n";
 		}
 		is.close();	
 	}else{
-		cout << "Could not open file -calls_vector.txt";
+		cout << "Could not open file -calls_vector.txt- \n";
 	}
 }
 
@@ -176,7 +178,7 @@ void call::availAdd(call x){
 		}
 		is.close();
 	}else{
-		cout << "Could not open file -cities_vector.txt";
+		cout << "Could not open file -calls_vector.txt- \n";
 	}
 }
 
@@ -200,7 +202,7 @@ void call::saveFile(vector<call> calls){
 		}
 		file.close();
 	}else{
-		cout << "Error opening file -calls_vector.txt-";
+		cout << "Error opening file -calls_vector.txt- \n";
 	}
 
 }

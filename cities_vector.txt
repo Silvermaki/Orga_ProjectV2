@@ -1,4 +1,4 @@
-Avail_head:      0
+Avail_head:     21
 Re-index:        0
 Structure:
  M:Marked
@@ -27,7 +27,7 @@ _         0601                               Choluteca
 _         0701                                Yuscaran
 _         0801                        Tegucigalpa D.C.
 _         0823                             Santa Lucia
-_         0826                        Valle de Angeles
+*       0 0826                        Valle de Angeles
 _         0901                          Puerto Lempira
 _         1001                            La Esperanza
 _         1101                                  Roatan

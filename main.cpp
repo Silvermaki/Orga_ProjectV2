@@ -19,8 +19,10 @@ void init_Files();
 int main(int argc, char* argv[]){
 	/*****Create Files, Un-comment if you need to re-make the original files.*****/
 	//init_Files();
-
-
+	phone phone1;
+	call call1;
+	city city1;
+	client client1;
 	return 0;
 }
 //////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////
