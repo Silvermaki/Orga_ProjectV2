@@ -17,6 +17,7 @@ void saveFiles(vector<city>, vector<client>, vector<call>, vector<phone>);
 
 int main(int argc, char* argv[]){
 	//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////
+	/*
 	srand(time(NULL));
 	phone temp;
 	call temp2;
@@ -35,9 +36,10 @@ int main(int argc, char* argv[]){
 	vector<call> call_list = temp2.callVector(numbers_list, starts_long, ends_long);
 	vector<phone> phone_list = temp.phoneVector(numbers_list, sid_list);
 	saveFiles(city_list, client_list, call_list, phone_list);
-	
+	*/
 	//////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -END-////////////////////////////////////////////
-
+	city lol;
+	lol.reIndex();
 	return 0;
 }
 

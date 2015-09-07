@@ -20,7 +20,10 @@ class city{
 	void setName(string);
 	string getName();
 	vector<city> cityVector();
+	void availDelete(int);
+	void availAdd(city);
 	string toString();
+	void reIndex();
 };
 
 #endif

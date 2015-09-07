@@ -29,7 +29,9 @@ class call{
   	vector<int> createCallEnd(int,vector<int>);
   	vector<call> callVector(vector<int> numbers, vector<long> starting, vector<long> ending);
   	vector<long> startLong(vector<int>);
-	vector<long> endLong(vector<int>);
+	  vector<long> endLong(vector<int>);
+    void availAdd(call);
+    void availDelete(int);
   	string toString();
 };
 
