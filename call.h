@@ -35,6 +35,7 @@ class call{
     void saveFile(vector<call>);
     void reIndex();
   	string toString();
+    void checkIndex();
 };
 
 #endif

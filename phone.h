@@ -28,6 +28,7 @@ class phone{
     void availModify(phone, int);
     void reIndex();
   	string toString();
+    void checkIndex();
 };
 
 #endif

@@ -27,6 +27,7 @@ class city{
 	void availList();
 	void availModify(city, int);
 	void reIndex();
+	void checkIndex();
 };
 
 #endif

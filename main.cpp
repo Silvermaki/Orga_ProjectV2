@@ -15,10 +15,12 @@ using namespace std;
 void saveFiles(vector<city>, vector<client>, vector<phone>, vector<call>);
 void init_Files();
 void saveIndexes();
+void init_Check();
 
 int main(int argc, char* argv[]){
 	/*****Create Files, Un-comment if you need to re-make the original files.*****/
 	//init_Files();
+	init_Check();
 	phone phone1;
 	call call1;
 	city city1;
@@ -26,6 +28,17 @@ int main(int argc, char* argv[]){
 
 	return 0;
 }
+void init_Check(){//Checks if we need to re-index a file.
+	city city_ref;
+	city_ref.checkIndex();
+	client client_ref;
+	client_ref.checkIndex();
+	call call_ref;
+	call_ref.checkIndex();
+	phone phone_ref;
+	phone_ref.checkIndex();
+}
+
 //////////////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -START-////////////////////////////////////////////
 void init_Files(){
 	srand(time(NULL));

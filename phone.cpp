@@ -136,6 +136,8 @@ void phone::reIndex(){
 		ofstream index;
 		index.open("phones_index.txt");
 		if(index.is_open()){
+			is.seekp(36);
+			is.write("1",1);//Anti-Disaster Flag, marks if indexing finished correctly.
 			int rrn=1;//rrn counter
 			is.seekg (0, is.end);//Move get cursor to the end of file.
 		    int length = is.tellg();//Save the value to a variable.
@@ -163,6 +165,8 @@ void phone::reIndex(){
 		    	index << index_list[i].first << index_list[i].second;//Copy to File.
 		    }
 		    index.close();
+		    is.seekp(36);
+			is.write("0",1);//Indexing finished succesfully, setting flag back to 0.
 		}else{
 			cout << "Could not open file -phones_index.txt- \n";
 		}
@@ -236,6 +240,24 @@ void phone::availModify(phone x, int rrn){
 			cout << "Invalid value, registry does not exist or is already deleted -phones_vector.txt- \n";
 		}
 		is.close();
+	}else{
+		cout << "Could not open file -phones_vector.txt- \n";
+	}
+}
+
+void phone::checkIndex(){
+	fstream is("phones_vector.txt");//Open the file to index.
+	if(is.is_open()){
+		is.seekg(36);
+		char* flag = new char;//flag variable
+		is.read(flag,1);//Anti-Disaster Flag, marks if indexing finished correctly.
+		if(*flag=='1'){
+			phone temp;
+			temp.reIndex();
+			cout << "-phones_index.txt- has been re-indexed.\n";
+		}else{
+			cout << "-phones_index.txt- does not need re-indexing.\n";
+		}
 	}else{
 		cout << "Could not open file -phones_vector.txt- \n";
 	}

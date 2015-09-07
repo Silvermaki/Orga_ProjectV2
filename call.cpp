@@ -189,6 +189,8 @@ void call::reIndex(){
 		ofstream index;
 		index.open("calls_index.txt");
 		if(index.is_open()){
+			is.seekp(36);
+			is.write("1",1);//Anti-Disaster Flag, marks if indexing finished correctly.
 			int rrn=1;//rrn counter
 			is.seekg (0, is.end);//Move get cursor to the end of file.
 		    int length = is.tellg();//Save the value to a variable.
@@ -216,10 +218,30 @@ void call::reIndex(){
 		    	index << index_list[i].first << index_list[i].second;//Copy to File.
 		    }
 		    index.close();
+		    is.seekp(36);
+			is.write("0",1);//Indexing finished succesfully, setting flag back to 0.
 		}else{
 			cout << "Could not open file -calls_index.txt- \n";
 		}
 	    is.close();
+	}else{
+		cout << "Could not open file -calls_vector.txt- \n";
+	}
+}
+
+void call::checkIndex(){
+	fstream is("calls_vector.txt");//Open the file to index.
+	if(is.is_open()){
+		is.seekg(36);
+		char* flag = new char;//flag variable
+		is.read(flag,1);//Anti-Disaster Flag, marks if indexing finished correctly.
+		if(*flag=='1'){
+			call temp;
+			temp.reIndex();
+			cout << "-calls_index.txt- has been re-indexed.\n";
+		}else{
+			cout << "-calls_index.txt- does not need re-indexing.\n";
+		}
 	}else{
 		cout << "Could not open file -calls_vector.txt- \n";
 	}

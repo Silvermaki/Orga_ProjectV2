@@ -38,6 +38,7 @@ class client{
 	void availModify(client, int);
 	void reIndex();
 	string toString();
+	void checkIndex();
 };
 
 #endif
