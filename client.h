@@ -8,6 +8,7 @@
 #include <vector>
 #include "city.h"
 #include <iomanip>
+#include "BTree.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ class client{
 	void reIndex();
 	string toString();
 	void checkIndex();
+	BTree loadIndex();
 };
 
 #endif

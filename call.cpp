@@ -3,6 +3,7 @@
 #include "call.h"
 #include <iomanip>
 #include <algorithm>
+#include "BTree.h"
 
 using namespace std;
 
@@ -185,7 +186,7 @@ void call::availAdd(call x){
 
 void call::reIndex(){
 	fstream is("calls_vector.txt");//Open the file to index.
-	cout << "Attemting to re-index -calls_vector.txt-";
+	cout << "Attemting to re-index -calls_vector.txt- \n";
 	if(is.is_open()){
 		ofstream index;
 		index.open("calls_index.txt");
@@ -221,6 +222,7 @@ void call::reIndex(){
 		    index.close();
 		    is.seekp(36);
 			is.write("0",1);//Indexing finished succesfully, setting flag back to 0.
+			cout << "Succesfully re-indexed -calls_vector.txt- \n";
 		}else{
 			cout << "Could not open file -calls_index.txt- \n";
 		}
@@ -247,6 +249,10 @@ void call::checkIndex(){
 	}else{
 		cout << "Could not open file -calls_vector.txt- \n";
 	}
+}
+
+BTree call::loadIndex(){
+
 }
 
 void call::saveFile(vector<call> calls){

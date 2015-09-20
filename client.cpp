@@ -2,6 +2,7 @@
 //client.size = 72
 #include "client.h"
 #include <algorithm>
+#include "BTree.h"
 
 using namespace std;
 
@@ -175,7 +176,7 @@ void client::availAdd(client x){
 
 void client::reIndex(){
 	fstream is("clients_vector.txt");//Open the file to index.
-	cout << "Attemting to re-index -clients_vector.txt-";
+	cout << "Attemting to re-index -clients_vector.txt-\n";
 	if(is.is_open()){
 		ofstream index;
 		index.open("clients_index.txt");
@@ -211,6 +212,7 @@ void client::reIndex(){
 		    index.close();
 		    is.seekp(36);
 			is.write("0",1);//Indexing finished succesfully, setting flag back to 0.
+			cout << "Succesfully re-indexed -clients_vector.txt- \n";
 		}else{
 			cout << "Could not open file -clients_index.txt- \n";
 		}
@@ -310,6 +312,35 @@ void client::checkIndex(){
 	}else{
 		cout << "Could not open file -clients_vector.txt- \n";
 	}
+}
+
+BTree client::loadIndex(){
+	BTree temp(8);//Create BTree
+	ifstream index;
+	cout << "Attempting to load index to memory... \n";
+	index.open("clients_index.txt");
+	if(index.is_open()){
+		index.seekg (0, index.end);//Move get cursor to the end of file.
+	    int length = index.tellg();//Save the value to a variable.
+	    for(int i = 0;i*23<length;i++){
+	    	index.seekg(i*23);//Move read pointer to registry
+		    char * buffer = new char(4);//Store in buffer
+		    index.read(buffer,13);//Store value in buffer
+		    string str(buffer,13);
+		    long value = atol(str.c_str());
+		    index.seekg(i*23 + 13);//Move read pointer to RRN
+		    char * buffer2 = new char(9);
+		    index.read(buffer2,9);//Store value in buffer
+		    string str2(buffer2,9);
+		    int rrn = atoi(str2.c_str());
+		    BTKey key(value,rrn);
+		    temp.insert(key);//Save index element to tree;
+	    }
+	    cout << "Index succesfully loaded to memory. \n";
+	}else{
+		cout << "Unable to open file -clients_index.txt- \n";
+	}	
+    return temp;
 }
 
 string client::toString(){

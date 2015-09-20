@@ -3,6 +3,7 @@
 #include "phone.h"
 #include <iomanip>
 #include <algorithm>
+#include "BTree.h"
 
 using namespace std;
 
@@ -132,7 +133,7 @@ void phone::availAdd(phone x){
 
 void phone::reIndex(){
 	fstream is("phones_vector.txt");//Open the file to index.
-	cout << "Attemting to re-index -phones_vector.txt-";
+	cout << "Attemting to re-index -phones_vector.txt-\n";
 	if(is.is_open()){
 		ofstream index;
 		index.open("phones_index.txt");
@@ -168,6 +169,7 @@ void phone::reIndex(){
 		    index.close();
 		    is.seekp(36);
 			is.write("0",1);//Indexing finished succesfully, setting flag back to 0.
+			cout << "Succesfully re-indexed -phones_vector.txt- \n";
 		}else{
 			cout << "Could not open file -phones_index.txt- \n";
 		}
@@ -266,6 +268,35 @@ void phone::checkIndex(){
 	}else{
 		cout << "Could not open file -phones_vector.txt- \n";
 	}
+}
+
+BTree phone::loadIndex(){
+	BTree temp(10);//Create BTree
+	ifstream index;
+	cout << "Attempting to load index to memory... \n";
+	index.open("phones_index.txt");
+	if(index.is_open()){
+		index.seekg (0, index.end);//Move get cursor to the end of file.
+	    int length = index.tellg();//Save the value to a variable.
+	    for(int i = 0;i*18<length;i++){
+	    	index.seekg(i*18);//Move read pointer to registry
+		    char * buffer = new char(4);//Store in buffer
+		    index.read(buffer,8);//Store value in buffer
+		    string str(buffer,8);
+		    long value = atol(str.c_str());
+		    index.seekg(i*18 + 8);//Move read pointer to RRN
+		    char * buffer2 = new char(9);
+		    index.read(buffer2,9);//Store value in buffer
+		    string str2(buffer2,9);
+		    int rrn = atoi(str2.c_str());
+		    BTKey key(value,rrn);
+		    temp.insert(key);//Save index element to tree;
+	    }
+	    cout << "Index succesfully loaded to memory. \n";
+	}else{
+		cout << "Unable to open file -phones_index.txt- \n";
+	}	
+    return temp;
 }
 
 string phone::toString(){

@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "BTree.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ class city{
 	void availModify(city, int);
 	void reIndex();
 	void checkIndex();
+	BTree loadIndex();
 };
 
 #endif

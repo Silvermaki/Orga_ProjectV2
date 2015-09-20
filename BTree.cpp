@@ -38,13 +38,13 @@ void BTreeNode::traverse(){
     for(i = 0; i < n; i++){
         if(leaf == false)
             C[i]->traverse();
-        cout << " " << keys[i].key << "::" << keys[i].rrn;
+        cout << keys[i].key << "\n";
     }
     if(leaf == false)
         C[i]->traverse();
 }
 
-BTreeNode *BTreeNode::search(int k){
+BTreeNode *BTreeNode::search(long k){
     int i = 0;
     while (i < n && k > keys[i].key)
         i++;
@@ -168,7 +168,7 @@ BTKey BTreeNode::getSucc(int idx){
     return cur->keys[0];
 }
 
-BTKey BTreeNode::searchBTK(int k){
+BTKey BTreeNode::searchBTK(long k){
     int i = 0;
     while (i < n && k > keys[i].key)
         i++;

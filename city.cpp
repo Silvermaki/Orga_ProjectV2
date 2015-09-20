@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <string.h>
 #include <algorithm>
+#include "BTree.h"
 
 using namespace std;
 
@@ -174,7 +175,7 @@ void city::availModify(city x, int rrn){
 
 void city::reIndex(){
 	fstream is("cities_vector.txt");//Open the file to index.
-	cout << "Attemting to re-index -city_vector.txt-";
+	cout << "Attemting to re-index -city_vector.txt- \n";
 	if(is.is_open()){
 		ofstream index;
 		index.open("cities_index.txt");
@@ -210,6 +211,7 @@ void city::reIndex(){
 		    index.close();
 		    is.seekp(36);
 			is.write("0",1);//Indexing finished succesfully, setting flag back to 0.
+			cout << "Succesfully re-indexed -cities_vector.txt- \n";
 		}else{
 			cout << "Could not open file -cities_index.txt- \n";
 		}
@@ -256,10 +258,39 @@ void city::saveFile(vector<city> cities){
 			file << "_ " << "        " <<setfill('0') << setw(4) << cities.at(i).getId_city() << setfill(' ') << setw(40) << cities.at(i).getName()<<"\n";
 		}
 		file.close();
-		cout << "Succesfully created CITY file  -cities_vector.txt-";
+		cout << "Succesfully created CITY file  -cities_vector.txt- \n";
 	}else{
 		cout << "Error opening file -cities_vector.txt- \n";
 	}
+}
+
+BTree city::loadIndex(){
+	BTree temp(3);//Create BTree
+	ifstream index;
+	cout << "Attempting to load index to memory... \n";
+	index.open("cities_index.txt");
+	if(index.is_open()){
+		index.seekg (0, index.end);//Move get cursor to the end of file.
+	    int length = index.tellg();//Save the value to a variable.
+	    for(int i = 0;i*14<length;i++){
+	    	index.seekg(i*14);//Move read pointer to registry
+		    char * buffer = new char(4);//Store in buffer
+		    index.read(buffer,4);//Store value in buffer
+		    string str(buffer,4);
+		    int value = atoi(str.c_str());
+		    index.seekg(i*14 + 4);//Move read pointer to RRN
+		    char * buffer2 = new char(9);
+		    index.read(buffer2,9);//Store value in buffer
+		    string str2(buffer2,9);
+		    int rrn = atoi(str2.c_str());
+		    BTKey key(value,rrn);
+		    temp.insert(key);//Save index element to tree;
+	    }
+	    cout << "Index succesfully loaded to memory. \n";
+	}else{
+		cout << "Unable to open file -cities_index.txt- \n";
+	}	
+    return temp;
 }
 
 string city::toString(){

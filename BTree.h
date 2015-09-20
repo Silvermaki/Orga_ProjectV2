@@ -6,9 +6,9 @@ using namespace std;
 
 class BTKey{
 public:
-    int key;
+    long key;
     int rrn;
-    BTKey(int k, int r){key = k; rrn = r;};
+    BTKey(long k, int r){key = k; rrn = r;};
     BTKey(){};
 };
 
@@ -23,7 +23,7 @@ class BTreeNode{
     void insertNonFull(BTKey k);
     void splitChild(int i, BTreeNode *y);
     void traverse();
-    BTreeNode *search(int k); 
+    BTreeNode *search(long k); 
     int findKey(BTKey k);
 
     void remove(BTKey k);
@@ -36,7 +36,7 @@ class BTreeNode{
     void borrowFromNext(int idx);
     void merge(int idx);
     friend class BTree;
-    BTKey searchBTK(int k);
+    BTKey searchBTK(long k);
 };
 
 

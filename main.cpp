@@ -19,8 +19,17 @@ void saveIndexes();
 void init_Check();
 
 int main(int argc, char* argv[]){
-	init_Check();
-
+	//init_Files();//<-------------- UN-COMMENT IF YOU NEED TO CREATE/RESET INITIAL FILES
+	init_Check();// Re-indexing flag check.
+	city city_ref;//Reference for city functions.
+	client client_ref;//Reference for client functions.
+	phone phone_ref;//Reference for phone functions.
+	BTree city_index  = city_ref.loadIndex();//Load city_index.txt into a B tree.
+	BTree client_index  = client_ref.loadIndex();//Load client_index.txt into a B tree.
+	BTree phone_index  = phone_ref.loadIndex();//Load phone_index.txt into a B tree.
+	city_index.traverse();
+	client_index.traverse();
+	phone_index.traverse();
 	return 0;
 }
 void init_Check(){//Checks if we need to re-index a file.
