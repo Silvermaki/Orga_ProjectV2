@@ -82,7 +82,7 @@ vector<int> call::createCallEnd(int amount, vector<int> start){  //YYYYMMDDHHMMS
 
 vector<call> call::callVector(vector<int> numbers, vector<long> starting, vector<long> ending ){
 	vector<call> lists;
-	int i;
+	unsigned int i;
 	srand(time(NULL));
 	int num;
 	int des;
@@ -97,7 +97,7 @@ vector<call> call::callVector(vector<int> numbers, vector<long> starting, vector
 }
 
 vector<long> call::startLong(vector<int> starting){
-	int i;
+	unsigned int i;
 	vector<long> temp;
 	for(i = 0; i<starting.size(); i++){
 		long temp2 = 20150000000000 + starting.at(i);
@@ -107,7 +107,7 @@ vector<long> call::startLong(vector<int> starting){
 }
 
 vector<long> call::endLong(vector<int> ending){
-	int i;
+	unsigned int i;
 	vector<long> temp;
 	for(i = 0; i<ending.size(); i++){
 		long temp2 = 20150000000000 + ending.at(i);
@@ -185,6 +185,7 @@ void call::availAdd(call x){
 
 void call::reIndex(){
 	fstream is("calls_vector.txt");//Open the file to index.
+	cout << "Attemting to re-index -calls_vector.txt-";
 	if(is.is_open()){
 		ofstream index;
 		index.open("calls_index.txt");
@@ -213,8 +214,8 @@ void call::reIndex(){
 		    	rrn++;
 		    }while(rrn!=(length-128)/58);//While the rrn is not equal to length - header size divided by the registry length.
 		    sort(index_list.begin(),index_list.end());//Sort index alphabetically.
-		    int i;
-		    for(int i=0;i<index_list.size();i++){
+		    unsigned int i;
+		    for(i=0;i<index_list.size();i++){
 		    	index << index_list[i].first << index_list[i].second;//Copy to File.
 		    }
 		    index.close();
@@ -231,6 +232,7 @@ void call::reIndex(){
 
 void call::checkIndex(){
 	fstream is("calls_vector.txt");//Open the file to index.
+	cout << "Checking -calls_index.txt- index status...\n";
 	if(is.is_open()){
 		is.seekg(36);
 		char* flag = new char;//flag variable
@@ -248,8 +250,9 @@ void call::checkIndex(){
 }
 
 void call::saveFile(vector<call> calls){
-	int i;
+	unsigned int i;
 	ofstream file("calls_vector.txt");
+	cout << "Attempting to create CALL file  -calls_vector.txt-...\n";
 	if(file.is_open()){
 		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
 		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
@@ -266,6 +269,7 @@ void call::saveFile(vector<call> calls){
 			file << "_ " << "        "<< calls.at(i).getNumber() << ' '<< calls.at(i).getStart() << ' '<< calls.at(i).getEnd() << ' '<< calls.at(i).getDestination() << "\n";
 		}
 		file.close();
+		cout << "Succesfully created CALL file  -calls_vector.txt-\n";
 	}else{
 		cout << "Error opening file -calls_vector.txt- \n";
 	}

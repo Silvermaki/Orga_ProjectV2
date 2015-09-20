@@ -55,7 +55,7 @@ vector<int> phone::createNumbers(int amount){
 
 vector<phone> phone::phoneVector(vector<int> numbers, vector<string> ids){
 	vector<phone> temp;
-	int i;
+	unsigned int i;
 	for(i = 0 ; i< ids.size() ; i++){
 		temp.push_back(phone(numbers.at(i), ids.at(i)));
 	}
@@ -132,6 +132,7 @@ void phone::availAdd(phone x){
 
 void phone::reIndex(){
 	fstream is("phones_vector.txt");//Open the file to index.
+	cout << "Attemting to re-index -phones_vector.txt-";
 	if(is.is_open()){
 		ofstream index;
 		index.open("phones_index.txt");
@@ -160,8 +161,8 @@ void phone::reIndex(){
 		    	rrn++;
 		    }while(rrn!=(length-110)/33);//While the rrn is not equal to length - header size divided by the registry length.
 		    sort(index_list.begin(),index_list.end());//Sort index alphabetically.
-		    int i;
-		    for(int i=0;i<index_list.size();i++){
+		    unsigned int i;
+		    for(i=0;i<index_list.size();i++){
 		    	index << index_list[i].first << index_list[i].second;//Copy to File.
 		    }
 		    index.close();
@@ -177,8 +178,9 @@ void phone::reIndex(){
 }
 
 void phone::saveFile(vector<phone> phones){
-	int i;
+	unsigned int i;
 	ofstream file("phones_vector.txt");
+	cout << "Attempting to create PHONE file  -phones_vector.txt-...\n";
 	if(file.is_open()){
 		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
 		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
@@ -193,8 +195,10 @@ void phone::saveFile(vector<phone> phones){
 			file << "_ " << "        " << phones.at(i).getNumber() << ' ' << phones.at(i).getId_client()<< "\n";
 		}
 		file.close();
+		cout << "Succesfully created PHONE file  -phones_vector.txt- \n";
 	}else{
 		cout << "Error opening file -phones_vector.txt- \n";
+		
 	}
 }
 
@@ -247,6 +251,7 @@ void phone::availModify(phone x, int rrn){
 
 void phone::checkIndex(){
 	fstream is("phones_vector.txt");//Open the file to index.
+	cout << "Checking -phones_index.txt- index status...\n";
 	if(is.is_open()){
 		is.seekg(36);
 		char* flag = new char;//flag variable

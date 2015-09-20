@@ -174,6 +174,7 @@ void city::availModify(city x, int rrn){
 
 void city::reIndex(){
 	fstream is("cities_vector.txt");//Open the file to index.
+	cout << "Attemting to re-index -city_vector.txt-";
 	if(is.is_open()){
 		ofstream index;
 		index.open("cities_index.txt");
@@ -202,8 +203,8 @@ void city::reIndex(){
 		    	rrn++;
 		    }while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
 		    sort(index_list.begin(),index_list.end());//Sort index alphabetically.
-		    int i;
-		    for(int i=0;i<index_list.size();i++){
+		    unsigned int i;
+		    for(i=0;i<index_list.size();i++){
 		    	index << index_list[i].first << index_list[i].second;//Copy to File.
 		    }
 		    index.close();
@@ -220,6 +221,7 @@ void city::reIndex(){
 
 void city::checkIndex(){
 	fstream is("cities_vector.txt");//Open the file to index.
+	cout << "Checking -cities_index.txt- index status...\n";
 	if(is.is_open()){
 		is.seekg(36);
 		char* flag = new char;//flag variable
@@ -238,7 +240,8 @@ void city::checkIndex(){
 
 void city::saveFile(vector<city> cities){
 	ofstream file("cities_vector.txt");
-	int i;
+	cout << "Attempting to create CITY file  -cities_vector.txt-...\n";
+	unsigned int i;
 	if(file.is_open()){
 		file << "Avail_head:" << setfill(' ') << setw(8) <<"0\n";
 		file << "Re-index:" << setfill(' ') << setw(10) <<"0\n";
@@ -253,6 +256,7 @@ void city::saveFile(vector<city> cities){
 			file << "_ " << "        " <<setfill('0') << setw(4) << cities.at(i).getId_city() << setfill(' ') << setw(40) << cities.at(i).getName()<<"\n";
 		}
 		file.close();
+		cout << "Succesfully created CITY file  -cities_vector.txt-";
 	}else{
 		cout << "Error opening file -cities_vector.txt- \n";
 	}
