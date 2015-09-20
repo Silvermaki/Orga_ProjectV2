@@ -114,7 +114,7 @@ void BTreeNode::remove(BTKey k){
     }
     else{
         if (leaf){
-            cout << "The key "<< k.key <<" is does not exist in the tree\n";
+            cout << "Does not exist...\n";
             return;
         }
         bool flag = ( (idx==n)? true : false );
@@ -255,7 +255,7 @@ void BTreeNode::merge(int idx)
 
 void BTree::remove(BTKey k){
     if (!root){
-        cout << "The tree is empty\n";
+        cout << "Empty index...\n";
         return;
     }
     root->remove(k);
@@ -272,7 +272,7 @@ void BTree::remove(BTKey k){
 
 BTKey BTree::searchBTK(int k){
     if (!root){
-        cout << "The tree is empty\n";
+        cout << "Empty index...\n";
         BTKey temp(0,0);
         return temp;
     }
