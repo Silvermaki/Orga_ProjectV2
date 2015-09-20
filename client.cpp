@@ -139,7 +139,7 @@ void client::availDelete(int rrn){
 	}
 }
 
-void client::availAdd(client x){
+BTree client::addClient(client x, BTree index){
 	fstream is("clients_vector.txt");
 	if(is.is_open()){
 		char * buffer = new char(7);
@@ -150,9 +150,13 @@ void client::availAdd(client x){
 		string temp = ss.str();
 		if(temp=="      0"){//Check if avail list header is empty
 			is.seekp(0,ios_base::end);//Move to the end of the file
+			int final = ((int)is.tellp()-136)/72;
 			stringstream ss2;
 			ss2 << "_ " << "        " << x.getId_client() << ' ' << setfill(' ') << setw(40) << x.getName() << ' ' << x.getGender() << ' ' << setfill('0') << setw(4) << x.getId_city()<<"\n";//Save added client to stream
 			string temp2 = ss2.str();
+			string idclient = x.getId_client();
+			BTKey key(atol(idclient.c_str()),final);
+			index.insert(key);
 			is.write(temp2.c_str(),72);//Append added city
 		}else{
 			int rrn = atoi(temp.c_str());
@@ -166,12 +170,16 @@ void client::availAdd(client x){
 			stringstream ss2;
 			ss2 << "_ " << "        " << x.getId_client() << ' ' << setfill(' ') << setw(40) << x.getName() << ' ' << x.getGender() << ' ' << setfill('0') << setw(4) << x.getId_city()<<"\n";//Save added client to stream
 			string temp2 = ss2.str();
+			string idclient = x.getId_client();
+			BTKey key(atol(idclient.c_str()),rrn);
+			index.insert(key);
 			is.write(temp2.c_str(),72);//Rewrite value.
 		}
 		is.close();
 	}else{
-		cout << "Could not open file -clients_vector.txt.txt- \n";
+		cout << "Could not open file -clients_vector.txt- \n";
 	}
+	return index;
 }
 
 void client::reIndex(){
@@ -342,6 +350,7 @@ BTree client::loadIndex(){
 	}	
     return temp;
 }
+
 
 string client::toString(){
 	stringstream ss;

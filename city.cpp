@@ -91,7 +91,7 @@ void city::availDelete(int rrn){
 	}
 }
 
-void city::availAdd(city x){
+BTree city::addCity(city x, BTree index){
 	fstream is("cities_vector.txt");
 	if(is.is_open()){
 		char * buffer = new char(7);
@@ -102,9 +102,12 @@ void city::availAdd(city x){
 		string temp = ss.str();
 		if(temp=="      0"){//Check if avail list header is empty
 			is.seekp(0,ios_base::end);//Move to the end of the file
+			int final = ((int)is.tellp()-111)/55;
 			stringstream ss2;
 			ss2 << "_ " << "        " <<setfill('0') << setw(4) << x.getId_city() << setfill(' ') << setw(40) << x.getName()<<"\n";//Save added city to stream
 			string temp2 = ss2.str();
+			BTKey key(x.getId_city(),final);
+			index.insert(key);
 			is.write(temp2.c_str(),55);//Append added city
 		}else{
 			int rrn = atoi(temp.c_str());
@@ -117,6 +120,8 @@ void city::availAdd(city x){
 			is.seekp(offset);//Move back to offset.
 			stringstream ss2;
 			ss2 << "_ " << "        " <<setfill('0') << setw(4) << x.getId_city() << setfill(' ') << setw(40) << x.getName()<<"\n";//Save added city to stream
+			BTKey key(x.getId_city(), rrn);
+			index.insert(key);
 			string temp2 = ss2.str();
 			is.write(temp2.c_str(),55);//Rewrite value.
 		}
@@ -124,6 +129,7 @@ void city::availAdd(city x){
 	}else{
 		cout << "Could not open file -cities_vector.txt- \n";
 	}
+	return index;
 }
 
 void city::availList(){

@@ -22,7 +22,6 @@ class phone{
   	void setId_client(string);
   	vector<int> createNumbers(int);
   	vector<phone> phoneVector(vector<int>, vector<string>);
-    void availAdd(phone);
     void availDelete(int);
     void saveFile(vector<phone>);
     void availList();
@@ -31,6 +30,7 @@ class phone{
   	string toString();
     void checkIndex();
     BTree loadIndex();
+    BTree addPhone(phone,BTree);
 };
 
 #endif

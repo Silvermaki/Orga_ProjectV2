@@ -33,7 +33,6 @@ class client{
 	vector<string> idtoString(vector<int>);
 	vector<client> clientVector(vector<string>, vector<string>, vector<city>);
 	void availDelete(int);
-	void availAdd(client);
 	void saveFile(vector<client>);
 	void availList();
 	void availModify(client, int);
@@ -41,6 +40,7 @@ class client{
 	string toString();
 	void checkIndex();
 	BTree loadIndex();
+	BTree addClient(client,BTree);
 };
 
 #endif

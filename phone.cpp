@@ -96,7 +96,7 @@ void phone::availDelete(int rrn){
 	}
 }
 
-void phone::availAdd(phone x){
+BTree phone::addPhone(phone x, BTree index){
 	fstream is("phones_vector.txt");
 	if(is.is_open()){
 		char * buffer = new char(7);
@@ -107,9 +107,12 @@ void phone::availAdd(phone x){
 		string temp = ss.str();
 		if(temp=="      0"){//Check if avail list header is empty
 			is.seekp(0,ios_base::end);//Move to the end of the file
+			int final = ((int)is.tellp()-110)/33;
 			stringstream ss2;
 			ss2 << "_ " << "        " << x.getNumber() << ' ' << x.getId_client()<< "\n";//Save added city to stream
 			string temp2 = ss2.str();
+			BTKey key(x.getNumber(),final);
+			index.insert(key);
 			is.write(temp2.c_str(),33);//Append added city
 		}else{
 			int rrn = atoi(temp.c_str());
@@ -123,12 +126,15 @@ void phone::availAdd(phone x){
 			stringstream ss2;
 			ss2 << "_ " << "        " << x.getNumber() << ' ' << x.getId_client()<< "\n";//Save added phone to stream
 			string temp2 = ss2.str();
+			BTKey key(x.getNumber(),rrn);
+			index.insert(key);
 			is.write(temp2.c_str(),33);//Rewrite value.
 		}
 		is.close();
 	}else{
 		cout << "Could not open file -phones_vector.txt- \n";
 	}
+	return index;
 }
 
 void phone::reIndex(){

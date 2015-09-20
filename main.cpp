@@ -27,11 +27,9 @@ int main(int argc, char* argv[]){
 	BTree city_index  = city_ref.loadIndex();//Load city_index.txt into a B tree.
 	BTree client_index  = client_ref.loadIndex();//Load client_index.txt into a B tree.
 	BTree phone_index  = phone_ref.loadIndex();//Load phone_index.txt into a B tree.
-	city_index.traverse();
-	client_index.traverse();
-	phone_index.traverse();
 	return 0;
 }
+
 void init_Check(){//Checks if we need to re-index a file.
 	city city_ref;
 	city_ref.checkIndex();

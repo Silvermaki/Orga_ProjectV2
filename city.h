@@ -22,7 +22,6 @@ class city{
 	string getName();
 	vector<city> cityVector();
 	void availDelete(int);
-	void availAdd(city);
 	string toString();
 	void saveFile(vector<city>);
 	void availList();
@@ -30,6 +29,7 @@ class city{
 	void reIndex();
 	void checkIndex();
 	BTree loadIndex();
+	BTree addCity(city,BTree);
 };
 
 #endif

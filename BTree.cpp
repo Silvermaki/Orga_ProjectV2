@@ -38,7 +38,7 @@ void BTreeNode::traverse(){
     for(i = 0; i < n; i++){
         if(leaf == false)
             C[i]->traverse();
-        cout << keys[i].key << "\n";
+        cout << keys[i].key <<" "<<keys[i].rrn <<"\n";
     }
     if(leaf == false)
         C[i]->traverse();
