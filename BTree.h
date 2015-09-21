@@ -1,6 +1,7 @@
 #include <iostream>
 #ifndef BTREE_H
 #define BTREE_H
+#include <fstream>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ class BTreeNode{
     void insertNonFull(BTKey k);
     void splitChild(int i, BTreeNode *y);
     void traverse();
+    void traverseList(int, fstream&);
     BTreeNode *search(long k); 
     int findKey(BTKey k);
 
@@ -37,6 +39,7 @@ class BTreeNode{
     void merge(int idx);
     friend class BTree;
     BTKey searchBTK(long k);
+    bool searchBTKB(long k);
 };
 
 
@@ -46,10 +49,12 @@ class BTree{
 public:
     BTree(int _t){  root = NULL;  t = _t; }
     void traverse(){  if (root != NULL) root->traverse(); }
+    void traverseList(int f, fstream &a){  if (root != NULL) root->traverseList(f,a); }
     BTreeNode* search(int k){  return (root == NULL)? NULL : root->search(k); }
     void insert(BTKey);
     void remove(BTKey);
     BTKey searchBTK(long k);
+    bool searchBTKB(long k);
 };
 
 

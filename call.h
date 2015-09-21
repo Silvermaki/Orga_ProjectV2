@@ -39,6 +39,7 @@ class call{
     void checkIndex();
     void checkIndexStatus();
     BTree loadIndex();
+    void availList();
 };
 
 #endif

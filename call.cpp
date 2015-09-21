@@ -117,6 +117,32 @@ vector<long> call::endLong(vector<int> ending){
 	return temp;
 }
 
+void call::availList(){
+	fstream is("calls_vector.txt");//Open the file to list.
+	if(is.is_open()){
+		int rrn=1;//rrn counter
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+	    int length = is.tellg();//Save the value to a variable.
+	    do{
+	    	int offset=128+rrn*58;//calculate offset for the current value.
+	    	is.seekg(offset);//Move the get cursor to the current offset.
+	    	char* mark = new char;//Save the mark
+	    	is.read(mark,1);
+	    	if(*mark == '_'){//Check if mark states registry is not deleted
+	    		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
+	    		char buffer[48];//Buffer to store the registry.
+	    		is.read(buffer,48);//Save into buffer.
+	    		string str(buffer,48);
+	    		cout << str;//List.
+	    	}
+	    	rrn++;
+		}while(rrn!=(length-128)/58);//While the rrn is not equal to length - header size divided by the registry length.
+		is.close();
+	}else{
+		cout << "Error opening file -calls_vector.txt- \n";
+	}
+}
+
 void call::availDelete(int rrn){
 	fstream is("calls_vector.txt");
 	if(is.is_open()){

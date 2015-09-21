@@ -24,6 +24,12 @@ BTree addPhoneMenu(BTree);
 BTree deleteCityMenu(BTree);
 BTree deleteClientMenu(BTree);
 BTree deletePhoneMenu(BTree);
+void listCityMenu(BTree);
+void listClientMenu(BTree);
+void listPhoneMenu(BTree);
+BTree modifyClientMenu(BTree);
+BTree modifyCityMenu(BTree);
+BTree modifyPhoneMenu(BTree);
 
 /////////////////////////////////////////////////MAIN START///////////////////////////////////////////////////
 int main(int argc, char* argv[]){
@@ -53,14 +59,14 @@ void Menu(){
 		
 		phone temp3;
 
-		cout << "\nWhat do you want to do? (Type in your answer and press ENTER or CTR+Z to exit)\n";
-		cout << "a. Add\nb. Delete\nc. List\nd. Modify\ne. Search\nf. Re-Index\ng. Re-Build Files\nh. Flush Indexes\ni. Re-load Indexes\n";
-		cout << "j. Check Index Status\n";
+		cout << "\nWhat do you want to do? (Type in your answer and press ENTER)\n";
+		cout << "a. Add Record\nb. Delete Record\nc. List Record\nd. Modify Record\ne. Search Record\nf. Re-Index\ng. Re-Build Files\nh. Flush Indexes\ni. Re-load Indexes\n";
+		cout << "j. Check Index Status\nz. Exit\n";
 		cin >> ans;
 		cin.ignore();
 		switch(ans){
 			case 'a':
-				cout << "\nWhat do you want to Add? (Type in your answer and press ENTER or CTR+Z to exit)\n";
+				cout << "\nWhat do you want to Add? (Type in your answer and press ENTER)\n";
 				cout << "1. City\n2. Client\n3. Phone\n";
 				cin >> ans;
 				cin.ignore();
@@ -82,7 +88,7 @@ void Menu(){
 
 				break;
 			case 'b':
-				cout << "\nWhat do you want to Add? (Type in your answer and press ENTER or CTR+Z to exit)\n";
+				cout << "\nWhat do you want to Delete? (Type in your answer and press ENTER)\n";
 				cout << "1. City\n2. Client\n3. Phone\n";
 				cin >> ans;
 				cin.ignore();
@@ -102,15 +108,95 @@ void Menu(){
 				}
 				break;
 			case 'c':
+				cout << "\nList which record? (Type in your answer and press ENTER)\n";
+				cout << "1. City\n2. Client\n3. Phone\n4. Call\n";
+				cin >> ans;
+				cin.ignore();
+				switch(ans){
+					case '1':
+						cout << "\nWhich order? (Type in your answer and press ENTER)\n";
+						cout << "1. Record File\n2. Index File\n";
+						cin >> ans;
+						cin.ignore();
+						switch(ans){
+							case '1':
+								city_ref.availList();
+								break;
+							case '2':
+								listCityMenu(city_index);
+								break;
+							default:
+								cout << "Wrong Input.\n";
+								break;
+						}
+						break;
+					case '2':
+						cout << "\nWhich order? (Type in your answer and press ENTER)\n";
+						cout << "1. Record File\n2. Index File\n";
+						cin >> ans;
+						cin.ignore();
+						switch(ans){
+							case '1':
+								client_ref.availList();
+								break;
+							case '2':
+								listClientMenu(client_index);
+								break;
+							default:
+								cout << "Wrong Input.\n";
+								break;
+						}
+						break;
+					case '3':
+						cout << "\nWhich order? (Type in your answer and press ENTER)\n";
+						cout << "1. Record File\n2. Index File\n";
+						cin >> ans;
+						cin.ignore();
+						switch(ans){
+							case '1':
+								phone_ref.availList();
+								break;
+							case '2':
+								listPhoneMenu(phone_index);
+								break;
+							default:
+								cout << "Wrong Input.\n";
+								break;
+						}
+						break;
+					case '4':
+						call_ref.availList();	
+						break;
+					default:
+						cout << "Wrong Input.\n";
+						break;
+				}
 				break;
 			case 'd':
-
+				cout << "\nModify what? (Type in your answer and press ENTER)\n";
+				cout << "1. City\n2. Client\n3. Phone\n";
+				cin >> ans;
+				cin.ignore();
+				switch(ans){
+					case '1':
+						city_index = modifyCityMenu(city_index);
+						break;
+					case '2':
+						client_index = modifyClientMenu(client_index);
+						break;
+					case '3':
+						phone_index = modifyPhoneMenu(phone_index);
+						break;
+					default:
+						cout << "Wrong Input.\n";
+						break;
+				}
 				break;
 			case 'e':
 
 				break;
 			case 'f':
-				cout << "\nRe-index which files? (Type in your answer and press ENTER or CTR+Z to exit)\n";
+				cout << "\nRe-index which files? (Type in your answer and press ENTER)\n";
 				cout << "1. City\n2. Client\n3. Phone\n4. Call\n5. All\n";
 				cin >> ans;
 				cin.ignore();
@@ -145,8 +231,8 @@ void Menu(){
 
 				break;
 			case 'i':
-				cout << "\nRe-Load which index? (Type in your answer and press ENTER or CTR+Z to exit)\n";
-				cout << "1. City\n2. Client\n3. Phone\n";
+				cout << "\nRe-Load which index? (Type in your answer and press ENTER)\n";
+				cout << "1. City\n2. Client\n3. Phone\n5. All\n";
 				cin >> ans;
 				cin.ignore();
 				switch(ans){
@@ -173,7 +259,7 @@ void Menu(){
 				}
 				break;
 			case 'j':
-				cout << "\nCheck which index status? (Type in your answer and press ENTER or CTR+Z to exit)\n";
+				cout << "\nCheck which index status? (Type in your answer and press ENTER)\n";
 				cout << "1. City\n2. Client\n3. Phone\n4. Call\n5. All\n";
 				cin >> ans;
 				cin.ignore();
@@ -200,6 +286,9 @@ void Menu(){
 						cout <<"Wrong Input.\n";
 						break;
 				}
+				break;
+			case 'z':
+				exit(0);
 				break;
 			default:
 				cout << "Wrong Input.\n";
@@ -229,6 +318,43 @@ BTree addClientMenu(BTree client_index){
 	return temp2.addClient(temp2, client_index);
 }
 
+//Modify client from user input.
+BTree modifyClientMenu(BTree client_index){
+	long inputs_int;
+	string inputs;
+	client temp2;
+	cout << "Existing client ID? (13 DIGITS)\n";
+	std::getline (cin,inputs);
+	stringstream(inputs) >> inputs_int;
+	BTKey temp = client_index.searchBTK(inputs_int);
+	if(client_index.searchBTKB(inputs_int)){
+		cout << "New client ID? (13 DIGITS)\n";
+		std::getline (cin,inputs);
+		temp2.setId_client(inputs);
+		stringstream(inputs) >> inputs_int;
+		if(!client_index.searchBTKB(inputs_int)){
+			cout << "New client Name? (MAX 40 CHARACTERS)\n";
+			std::getline (cin,inputs);
+			temp2.setName(inputs);
+			cout << "New client Gender? (M or F)\n";
+			std::getline (cin,inputs);
+			temp2.setGender(inputs.at(0));
+			cout << "New client ID City? ()\n";
+			std::getline (cin,inputs);
+			stringstream(inputs) >> inputs_int;
+			temp2.setId_city(inputs_int);
+			client_index.remove(temp);
+			temp2.availDelete(temp.rrn);
+			return temp2.addClient(temp2, client_index);
+		}else{
+			cout << "This record already exists, can't have duplicates. \n";
+		}
+	}else{
+		cout << "Record does not exist...\n";
+	}
+	return client_index;
+}
+
 //Add city from user input.
 BTree addCityMenu(BTree city_index){
 	int inputs_int;
@@ -243,6 +369,38 @@ BTree addCityMenu(BTree city_index){
 	temp.setName(inputs);
 	return temp.addCity(temp, city_index);
 }
+
+
+//Modify city from user input.
+BTree modifyCityMenu(BTree city_index){
+	int inputs_int;
+	string inputs;
+	city temp;
+	cout << "Existing City ID? (MAX 4 DIGITS)\n";
+	std::getline (cin,inputs);
+	stringstream(inputs) >> inputs_int;
+	BTKey temp2 = city_index.searchBTK(inputs_int);
+	if(city_index.searchBTKB(inputs_int)){
+		cout << "New City ID? (MAX 4 DIGITS)\n";
+		std::getline (cin,inputs);
+		stringstream(inputs) >> inputs_int;
+		temp.setId_city(inputs_int);
+		if(!city_index.searchBTKB(inputs_int)){
+			cout << "New City Name? (MAX 40 CHARACTERS)\n";
+			std::getline (cin,inputs);
+			temp.setName(inputs);
+			city_index.remove(temp2);
+			temp.availDelete(temp2.rrn);
+			return temp.addCity(temp, city_index);
+		}else{
+			cout << "This record already exists, can't have duplicates. \n";
+		}
+	}else{
+		cout << "Record does not exist...\n";
+	}
+	return city_index;
+}
+
 
 //Add phone from user input.
 BTree addPhoneMenu(BTree phone_index){
@@ -259,6 +417,35 @@ BTree addPhoneMenu(BTree phone_index){
 	return temp.addPhone(temp, phone_index);
 }
 
+//Modify phone from user input.
+BTree modifyPhoneMenu(BTree phone_index){
+	long inputs_int;
+	string inputs;
+	phone temp;
+	cout << "Existing Phone Number? (8 DIGITS)\n";
+	std::getline (cin,inputs);
+	stringstream(inputs) >> inputs_int;
+	BTKey temp2 = phone_index.searchBTK(inputs_int);
+	if(phone_index.searchBTKB(inputs_int)){
+		cout << "New Phone Number? (8 DIGITS)\n";
+		std::getline (cin,inputs);
+		stringstream(inputs) >> inputs_int;
+		temp.setNumber(inputs_int);
+		if(!phone_index.searchBTKB(inputs_int)){
+			cout << "New Client ID? (13 DIGITS)\n";
+			std::getline (cin,inputs);
+			temp.setId_client(inputs);
+			phone_index.remove(temp2);
+			temp.availDelete(temp2.rrn);
+			return temp.addPhone(temp, phone_index);
+		}else{
+			cout << "This record already exists, can't have duplicates. \n";
+		}
+	}else{
+		cout << "Record does not exist...\n";
+	}
+}
+
 //Delete city by ID
 BTree deleteCityMenu(BTree city_index){
 	int id;
@@ -266,10 +453,13 @@ BTree deleteCityMenu(BTree city_index){
 	cout << "City ID to delete? (MAX 4 DIGITS)\n";
 	cin >> id;
 	cin.ignore();
-
-	BTKey temp = city_index.searchBTK(id);
-	city_index.remove(temp);
-	city_ref.availDelete(temp.rrn);
+	if(city_index.searchBTKB(id)){
+		BTKey temp = city_index.searchBTK(id);
+		city_index.remove(temp);
+		city_ref.availDelete(temp.rrn);
+	}else{
+		cout << "Record does not exist...\n";
+	}
 	return city_index;
 }
 
@@ -280,9 +470,13 @@ BTree deleteClientMenu(BTree client_index){
 	cout << "Client ID to delete? (13 DIGITS)\n";
 	cin >> id;
 	cin.ignore();
-	BTKey temp = client_index.searchBTK(id);
-	client_index.remove(temp);
-	client_ref.availDelete(temp.rrn);
+	if(client_index.searchBTKB(id)){
+		BTKey temp = client_index.searchBTK(id);
+		client_index.remove(temp);
+		client_ref.availDelete(temp.rrn);
+	}else{
+		cout << "Record does not exist...\n";
+	}
 	return client_index;
 }
 
@@ -293,11 +487,35 @@ BTree deletePhoneMenu(BTree phone_index){
 	cout << "Phone Number to delete? (8 DIGITS)\n";
 	cin >> id;
 	cin.ignore();
-
-	BTKey temp = phone_index.searchBTK(id);
-	phone_index.remove(temp);
-	phone_ref.availDelete(temp.rrn);
+	if(phone_index.searchBTKB(id)){
+		BTKey temp = phone_index.searchBTK(id);
+		phone_index.remove(temp);
+		phone_ref.availDelete(temp.rrn);
+	}else{
+		cout << "Record does not exist...\n";
+	}
 	return phone_index;
+}
+
+//List Cities using index
+void listCityMenu(BTree city_index){
+	fstream is("cities_vector.txt");
+	city_index.traverseList(1, is);
+	is.close();
+}
+
+//List Clients using index
+void listClientMenu(BTree clients_index){
+	fstream is("clients_vector.txt");
+	clients_index.traverseList(2, is);
+	is.close();
+}
+
+//List Phones using index
+void listPhoneMenu(BTree phones_index){
+	fstream is("phones_vector.txt");
+	phones_index.traverseList(3, is);
+	is.close();
 }
 //////////////////////////////////////////MENU FUNCTIONS END//////////////////////////////////////////////////
 

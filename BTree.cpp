@@ -1,5 +1,10 @@
 #include <iostream>
 #include "BTree.h"
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+
 using namespace std;
 
 void BTree::insert(BTKey k){
@@ -42,6 +47,39 @@ void BTreeNode::traverse(){
     }
     if(leaf == false)
         C[i]->traverse();
+}
+
+void BTreeNode::traverseList(int file, fstream &a){
+    int size;
+    int size_r;
+    int head;
+    if(file == 1){ 
+        size = 55;
+        head = 111;
+        size_r = 45;
+    }else if(file == 2){
+        size = 72;
+        head = 136;
+        size_r = 62;
+    }else{
+        size = 33;
+        head = 110;
+        size_r = 23;
+    }
+    int i;
+    for(i = 0; i < n; i++){
+        if(leaf == false){
+            C[i]->traverseList(file, a);
+        }
+        int offset = (keys[i].rrn*size + head + 10);
+        a.seekg(offset);
+        char buffer[size_r];
+        a.read(buffer,size_r); 
+        cout << buffer;
+    }
+    if(leaf == false){
+        C[i]->traverseList(file, a);
+    }
 }
 
 BTreeNode *BTreeNode::search(long k){
@@ -181,6 +219,18 @@ BTKey BTreeNode::searchBTK(long k){
     return C[i]->searchBTK(k);
 }
 
+bool BTreeNode::searchBTKB(long k){
+    int i = 0;
+    while (i < n && k > keys[i].key)
+        i++;
+    if (keys[i].key == k)
+        return true;
+    if (leaf == true){
+        return false;
+    }
+    return C[i]->searchBTKB(k);
+}
+
 void BTreeNode::fill(int idx){
     if (idx!=0 && C[idx-1]->n>=t)
         borrowFromPrev(idx);
@@ -277,4 +327,11 @@ BTKey BTree::searchBTK(long k){
         return temp;
     }
     return root->searchBTK(k);
+}
+
+bool BTree::searchBTKB(long k){
+    if (!root){
+        return false;
+    }
+    return root->searchBTKB(k);
 }

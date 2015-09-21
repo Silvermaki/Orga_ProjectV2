@@ -65,18 +65,17 @@ vector<phone> phone::phoneVector(vector<int> numbers, vector<string> ids){
 
 void phone::availDelete(int rrn){
 	fstream is("phones_vector.txt");
-	cout << "Attempting to delete...\n";
+	cout << "Attempting action...\n";
 	if(is.is_open()){
 		char * buffer = new char;
 		int offset=110+rrn*33;//calculate offset.
 		is.seekg(offset);//Move get cursor to offset.
 		is.read(buffer,1);//Read 1 byte
-		cout << buffer;
 		if(*buffer == '_'){//Check if already deleted.
 			is.seekp(offset);//Move the put cursor towards the deleted registry.
 			is.write("*",1);//Mark the registry as deleted.
 			is.seekg(11);//Move the get cursor to the old value from the avail list header.
-			char * buffer2 = new char(7);
+			char buffer2[7];
 			is.read(buffer2,7);//Save the value to a buffer.
 			stringstream ss;
 			ss << setfill(' ') << setw(7) << rrn;
@@ -85,7 +84,7 @@ void phone::availDelete(int rrn){
 			is.write(temp.c_str(),7);//Overwrite avail list header.
 			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
 			is.write(buffer2,7);//Overwrite it with the old value of the avail list header.
-			cout << "Delete Succesfull.\n";
+			cout << "Completed succesfully.\n";
 		}else{
 			cout << "Invalid value, registry does not exist or is already deleted -phones_vector.txt- \n";
 		}
@@ -222,9 +221,10 @@ void phone::availList(){
 	    	is.read(mark,1);
 	    	if(*mark == '_'){//Check if mark states registry is not deleted
 	    		is.seekg(offset+10);//Move the get cursor to the current offset, bypasing the mark byte and the reference bytes.
-	    		char * buffer = new char(23);//Buffer to store the registry.
+	    		char buffer[23];//Buffer to store the registry.
 	    		is.read(buffer,23);//Save into buffer.
-	    		cout << buffer;//List.
+	    		string str(buffer,23);
+	    		cout << str;//List.
 	    	}
 	    	rrn++;
 		}while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
