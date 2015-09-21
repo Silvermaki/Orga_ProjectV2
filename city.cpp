@@ -61,13 +61,13 @@ vector<city> city::cityVector(){
 
 void city::availDelete(int rrn){
 	fstream is("cities_vector.txt");
+	cout << "Attempting to delete...\n";
 	if(is.is_open()){
 		char * buffer = new char;
 		int offset=111+rrn*55;//calculate offset.
 		is.seekg(offset);//Move get cursor to offset.
 		is.read(buffer,1);//Read 1 byte
 		if(*buffer == '_'){//Check if already deleted.
-			delete[] buffer;
 			is.seekp(offset);//Move the put cursor towards the deleted registry.
 			is.write("*",1);//Mark the registry as deleted.
 			is.seekg(11);//Move the get cursor to the old value from the avail list header.
@@ -80,8 +80,7 @@ void city::availDelete(int rrn){
 			is.write(temp.c_str(),7);//Overwrite avail list header.
 			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
 			is.write(buffer2,7);//Overwrite it with the old value of the avail list header.
-			delete[] buffer2;
-			
+			cout << "Delete Succesfull.\n";
 		}else{
 			cout << "Invalid value, registry does not exist or is already deleted -cities_vector.txt- \n";
 		}
@@ -93,6 +92,7 @@ void city::availDelete(int rrn){
 
 BTree city::addCity(city x, BTree index){
 	fstream is("cities_vector.txt");
+	cout << "Attempting to add...\n";
 	if(is.is_open()){
 		char * buffer = new char(7);
 		is.seekg(11);//Move get cursor to avail list header
@@ -126,6 +126,7 @@ BTree city::addCity(city x, BTree index){
 			is.write(temp2.c_str(),55);//Rewrite value.
 		}
 		is.close();
+		cout << "Succesfully added: " << x.toString() <<"\n";
 	}else{
 		cout << "Could not open file -cities_vector.txt- \n";
 	}
@@ -238,6 +239,23 @@ void city::checkIndex(){
 			city temp;
 			temp.reIndex();
 			cout << "-cities_index.txt- has been re-indexed.\n";
+		}else{
+			cout << "-clities_index.txt- does not need re-indexing.\n";
+		}
+	}else{
+		cout << "Could not open file -cities_vector.txt- \n";
+	}
+}
+
+void city::checkIndexStatus(){
+	fstream is("cities_vector.txt");//Open the file to index.
+	cout << "Checking -cities_index.txt- index status...\n";
+	if(is.is_open()){
+		is.seekg(36);
+		char* flag = new char;//flag variable
+		is.read(flag,1);//Anti-Disaster Flag, marks if indexing finished correctly.
+		if(*flag=='1'){
+			cout << "-cities_index.txt- needs re-indexing.\n";
 		}else{
 			cout << "-clities_index.txt- does not need re-indexing.\n";
 		}

@@ -37,6 +37,7 @@ class call{
     void reIndex();
   	string toString();
     void checkIndex();
+    void checkIndexStatus();
     BTree loadIndex();
 };
 

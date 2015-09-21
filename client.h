@@ -41,6 +41,7 @@ class client{
 	void checkIndex();
 	BTree loadIndex();
 	BTree addClient(client,BTree);
+    void checkIndexStatus();
 };
 
 #endif

@@ -1,6 +1,6 @@
 all: prog 
 
-prog: main.o  call.o phone.o city.o client.o BTree.o
+prog: main.o  call.o phone.o city.o client.o BTree.o 
 	g++ main.o call.o phone.o city.o client.o BTree.o -o prog
 
 main.o: main.cpp

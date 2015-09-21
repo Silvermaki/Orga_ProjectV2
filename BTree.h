@@ -49,7 +49,7 @@ public:
     BTreeNode* search(int k){  return (root == NULL)? NULL : root->search(k); }
     void insert(BTKey);
     void remove(BTKey);
-    BTKey searchBTK(int k);
+    BTKey searchBTK(long k);
 };
 
 

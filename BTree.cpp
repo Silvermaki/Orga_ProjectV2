@@ -270,7 +270,7 @@ void BTree::remove(BTKey k){
     return;
 }
 
-BTKey BTree::searchBTK(int k){
+BTKey BTree::searchBTK(long k){
     if (!root){
         cout << "Empty index...\n";
         BTKey temp(0,0);

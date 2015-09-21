@@ -251,6 +251,23 @@ void call::checkIndex(){
 	}
 }
 
+void call::checkIndexStatus(){
+	fstream is("calls_vector.txt");//Open the file to index.
+	cout << "Checking -calls_index.txt- index status...\n";
+	if(is.is_open()){
+		is.seekg(36);
+		char* flag = new char;//flag variable
+		is.read(flag,1);//Anti-Disaster Flag, marks if indexing finished correctly.
+		if(*flag=='1'){
+			cout << "-calls_index.txt- needs re-indexing.\n";
+		}else{
+			cout << "-calls_index.txt- does not need re-indexing.\n";
+		}
+	}else{
+		cout << "Could not open file -calls_vector.txt- \n";
+	}
+}
+
 BTree call::loadIndex(){
 
 }

@@ -30,6 +30,7 @@ class city{
 	void checkIndex();
 	BTree loadIndex();
 	BTree addCity(city,BTree);
+    void checkIndexStatus();
 };
 
 #endif

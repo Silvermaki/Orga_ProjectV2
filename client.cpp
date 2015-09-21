@@ -109,13 +109,13 @@ vector<string> client::idtoString(vector<int> ids){
 
 void client::availDelete(int rrn){
 	fstream is("clients_vector.txt");
+	cout << "Attempting to delete...\n";
 	if(is.is_open()){
 		char * buffer = new char;
 		int offset=136+rrn*72;//calculate offset.
 		is.seekg(offset);//Move get cursor to offset.
 		is.read(buffer,1);//Read 1 byte
 		if(*buffer == '_'){//Check if already deleted.
-			delete[] buffer;
 			is.seekp(offset);//Move the put cursor towards the deleted registry.
 			is.write("*",1);//Mark the registry as deleted.
 			is.seekg(11);//Move the get cursor to the old value from the avail list header.
@@ -128,8 +128,7 @@ void client::availDelete(int rrn){
 			is.write(temp.c_str(),7);//Overwrite avail list header.
 			is.seekp(offset+2);//Move the put cursor to the next deleted reference of the registry.
 			is.write(buffer2,7);//Overwrite it with the old value of the avail list header.
-			delete[] buffer2;
-			
+			cout << "Delete Succesfull.\n";
 		}else{
 			cout << "Invalid value, registry does not exist or is already deleted -clients_vector.txt- \n";
 		}
@@ -314,6 +313,23 @@ void client::checkIndex(){
 			client temp;
 			temp.reIndex();
 			cout << "-clients_index.txt- has been re-indexed.\n";
+		}else{
+			cout << "-clients_index.txt- does not need re-indexing.\n";
+		}
+	}else{
+		cout << "Could not open file -clients_vector.txt- \n";
+	}
+}
+
+void client::checkIndexStatus(){
+	fstream is("clients_vector.txt");//Open the file to index.
+	cout << "Checking -clients_index.txt- index status...\n";
+	if(is.is_open()){
+		is.seekg(36);
+		char* flag = new char;//flag variable
+		is.read(flag,1);//Anti-Disaster Flag, marks if indexing finished correctly.
+		if(*flag=='1'){
+			cout << "-clients_index.txt- needs re-indexing.\n";
 		}else{
 			cout << "-clients_index.txt- does not need re-indexing.\n";
 		}

@@ -31,6 +31,7 @@ class phone{
     void checkIndex();
     BTree loadIndex();
     BTree addPhone(phone,BTree);
+    void checkIndexStatus();
 };
 
 #endif
