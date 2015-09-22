@@ -318,6 +318,54 @@ BTree city::loadIndex(){
     return temp;
 }
 
+void city::search(int rrn){
+	ifstream index;
+	index.open("cities_vector.txt");
+	if(index.is_open()){
+		int offset=111+rrn*55 + 10;
+		index.seekg(offset);
+		char buffer[45];//Buffer to store the registry.
+		index.read(buffer,45);//Save into buffer.
+		string str(buffer,45);
+		cout << "Found at RRN " << rrn << ": ";
+		cout << str;
+	}else{
+		cout << "Found in index but unable to open file -cities_index.txt- \n";
+	}
+}
+
+string city::search2(long xid){
+	ifstream index;
+	index.open("cities_vector.txt");
+	int rrn = 1;
+	index.seekg (0, index.end);//Move get cursor to the end of file.
+    long length = ((long)index.tellg()-111)/55;
+	if(index.is_open()){
+		do{
+			int offset=111+rrn*55 + 10;
+			index.seekg(offset);
+			char buffer[4];
+			index.read(buffer,4);
+			string str(buffer,4);
+			if(atoi(str.c_str())==xid){
+				index.seekg(offset);
+				char buffer[45];//Buffer to store the registry.
+				index.read(buffer,45);//Save into buffer.
+				string str(buffer,45);
+				stringstream ss;
+				ss << "                  ID                                    NAME\n";
+				ss << "Found at RRN " << rrn << ": " <<str;
+				return ss.str();
+			}else{
+				rrn ++;
+			}
+		}while(rrn<length);
+	}else{
+		cout << "Found in index but unable to open file -cities_index.txt- \n";
+	}
+	return "Not found...\n";
+}
+
 string city::toString(){
 	stringstream ss;
 	ss << id_city << "\t" << name;

@@ -31,6 +31,8 @@ class city{
 	BTree loadIndex();
 	BTree addCity(city,BTree);
     void checkIndexStatus();
+    void search(int);
+    string search2(long);
 };
 
 #endif

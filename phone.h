@@ -32,6 +32,8 @@ class phone{
     BTree loadIndex();
     BTree addPhone(phone,BTree);
     void checkIndexStatus();
+    void search(int);
+    string search2(long);
 };
 
 #endif

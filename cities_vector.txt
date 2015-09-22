@@ -7,7 +7,7 @@ Structure:
  I:City_ID
  N:City_Name
 MBRRRRRRRBIIIIBNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-_         0102                               TrollTown
+_         0101                                La Ceiba
 _         0107                                    Tela
 _         0201                                Trujillo
 _         0301                               Comayagua

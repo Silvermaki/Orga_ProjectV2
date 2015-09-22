@@ -30,6 +30,12 @@ void listPhoneMenu(BTree);
 BTree modifyClientMenu(BTree);
 BTree modifyCityMenu(BTree);
 BTree modifyPhoneMenu(BTree);
+void searchCityMenu(BTree);
+void searchClientMenu(BTree);
+void searchPhoneMenu(BTree);
+void searchCityMenuFile();
+void searchClientMenuFile();
+void searchPhoneMenuFile();
 
 /////////////////////////////////////////////////MAIN START///////////////////////////////////////////////////
 int main(int argc, char* argv[]){
@@ -193,7 +199,66 @@ void Menu(){
 				}
 				break;
 			case 'e':
-
+				cout << "\nSearch for what? (Type in your answer and press ENTER)\n";
+				cout << "1. City\n2. Client\n3. Phone\n";
+				cin >> ans;
+				cin.ignore();
+				switch(ans){
+					case '1':
+						cout << "\nSearch using what? (Type in your answer and press ENTER)\n";
+						cout << "1. Data file\n2. Memory Index\n";
+						cin >> ans;
+						cin.ignore();
+						switch(ans){
+							case '1':
+								searchCityMenuFile();
+								break;
+							case '2':
+								searchCityMenu(city_index);
+								break;
+							default:
+								cout << "Wrong Input.\n";
+								break;
+						}
+						break;
+					case '2':
+						cout << "\nSearch using what? (Type in your answer and press ENTER)\n";
+						cout << "1. Data file\n2. Memory Index\n";
+						cin >> ans;
+						cin.ignore();
+						switch(ans){
+							case '1':
+								searchClientMenuFile();
+								break;
+							case '2':
+								searchClientMenu(client_index);
+								break;
+							default:
+								cout << "Wrong Input.\n";
+								break;
+						}
+						break;
+					case '3':
+						cout << "\nSearch using what? (Type in your answer and press ENTER)\n";
+						cout << "1. Data file\n2. Memory Index\n";
+						cin >> ans;
+						cin.ignore();
+						switch(ans){
+							case '1':
+								searchPhoneMenuFile();
+								break;
+							case '2':
+								searchPhoneMenu(phone_index);
+								break;
+							default:
+								cout << "Wrong Input.\n";
+								break;
+						}
+						break;
+					default:
+						cout << "Wrong Input.\n";
+						break;
+				}
 				break;
 			case 'f':
 				cout << "\nRe-index which files? (Type in your answer and press ENTER)\n";
@@ -497,6 +562,78 @@ BTree deletePhoneMenu(BTree phone_index){
 	return phone_index;
 }
 
+//Search Cities index
+void searchCityMenu(BTree city_index){
+	int id;
+	city city_ref;
+	cout << "City ID to search? (MAX 4 DIGITS)\n";
+	cin >> id;
+	cin.ignore();
+	if(city_index.searchBTKB(id)){
+		BTKey temp = city_index.searchBTK(id);
+		city_ref.search(temp.rrn);
+	}else{
+		cout << "Record not found...\n";
+	}
+}
+
+void searchCityMenuFile(){
+	city city_ref;
+	long id;
+	cout << "City ID to search? (MAX 4 DIGITS)\n";
+	cin >> id;
+	cin.ignore();
+	cout << city_ref.search2(id);
+}
+
+//Search Clients index
+void searchClientMenu(BTree client_index){
+	long id;
+	client client_ref;
+	cout << "client ID to search? (13 DIGITS)\n";
+	cin >> id;
+	cin.ignore();
+	if(client_index.searchBTKB(id)){
+		BTKey temp = client_index.searchBTK(id);
+		client_ref.search(temp.rrn);
+	}else{
+		cout << "Record not found...\n";
+	}
+}
+
+void searchClientMenuFile(){
+	client client_ref;
+	long id;
+	cout << "Client ID to search? (MAX 4 DIGITS)\n";
+	cin >> id;
+	cin.ignore();
+	cout << client_ref.search2(id);
+}
+
+//Search Phones index
+void searchPhoneMenu(BTree phone_index){
+	long id;
+	phone phone_ref;
+	cout << "phone Number to search? (13 DIGITS)\n";
+	cin >> id;
+	cin.ignore();
+	if(phone_index.searchBTKB(id)){
+		BTKey temp = phone_index.searchBTK(id);
+		phone_ref.search(temp.rrn);
+	}else{
+		cout << "Record not found...\n";
+	}
+}
+
+void searchPhoneMenuFile(){
+	phone phone_ref;
+	long id;
+	cout << "Phone Number to search? (8 DIGITS)\n";
+	cin >> id;
+	cin.ignore();
+	cout << phone_ref.search2(id);
+}
+
 //List Cities using index
 void listCityMenu(BTree city_index){
 	fstream is("cities_vector.txt");
@@ -517,6 +654,7 @@ void listPhoneMenu(BTree phones_index){
 	phones_index.traverseList(3, is);
 	is.close();
 }
+
 //////////////////////////////////////////MENU FUNCTIONS END//////////////////////////////////////////////////
 
 //////////////////////////////////////////INITIAL COMPONENTS START////////////////////////////////////////////

@@ -368,6 +368,53 @@ BTree client::loadIndex(){
     return temp;
 }
 
+void client::search(int rrn){
+	ifstream index;
+	index.open("clients_vector.txt");
+	if(index.is_open()){
+		int offset=offset=136+rrn*72 + 10;
+		index.seekg(offset);
+		char buffer[62];//Buffer to store the registry.
+		index.read(buffer,62);//Save into buffer.
+		string str(buffer,62);
+		cout << "Found at RRN " << rrn << ": ";
+		cout << str;
+	}else{
+		cout << "Found in index but unable to open file -clients_index.txt- \n";
+	}
+}
+
+string client::search2(long xid){
+	ifstream index;
+	index.open("clients_vector.txt");
+	int rrn = 1;
+	index.seekg (0, index.end);//Move get cursor to the end of file.
+    long length = ((long)index.tellg()-136)/72;
+	if(index.is_open()){
+		do{
+			int offset=136+rrn*72 + 10;
+			index.seekg(offset);
+			char buffer[13];
+			index.read(buffer,13);
+			string str(buffer,13);
+			if(atol(str.c_str())==xid){
+				index.seekg(offset);
+				char buffer[62];//Buffer to store the registry.
+				index.read(buffer,62);//Save into buffer.
+				string str(buffer,62);
+				stringstream ss;
+				ss << "                           ID                                     NAME   INFO\n";
+				ss << "Found at RRN " << rrn << ": " <<str;
+				return ss.str();
+			}else{
+				rrn ++;
+			}
+		}while(rrn<length);
+	}else{
+		cout << "Found in index but unable to open file -clients_index.txt- \n";
+	}
+	return "Not found...\n";
+}
 
 string client::toString(){
 	stringstream ss;

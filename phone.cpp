@@ -321,6 +321,54 @@ BTree phone::loadIndex(){
     return temp;
 }
 
+void phone::search(int rrn){
+	ifstream index;
+	index.open("phones_vector.txt");
+	if(index.is_open()){
+		int offset=110+rrn*33 + 10;
+		index.seekg(offset);
+		char buffer[23];//Buffer to store the registry.
+		index.read(buffer,23);//Save into buffer.
+		string str(buffer,23);
+		cout << "Found at RRN " << rrn << ": ";
+		cout << str;
+	}else{
+		cout << "Found in index but unable to open file -phones_index.txt- \n";
+	}
+}
+
+string phone::search2(long xid){
+	ifstream index;
+	index.open("phones_vector.txt");
+	int rrn = 1;
+	index.seekg (0, index.end);//Move get cursor to the end of file.
+    long length = ((long)index.tellg()-110)/33;
+	if(index.is_open()){
+		do{
+			int offset=110+rrn*33 + 10;
+			index.seekg(offset);
+			char buffer[8];
+			index.read(buffer,8);
+			string str(buffer,8);
+			if(atoi(str.c_str())==xid){
+				index.seekg(offset);
+				char buffer[23];//Buffer to store the registry.
+				index.read(buffer,23);//Save into buffer.
+				string str(buffer,23);
+				stringstream ss;
+				ss << "                    PHONE     CLIENT ID\n";                        
+				ss << "Found at RRN " << rrn << ": " <<str;
+				return ss.str();
+			}else{
+				rrn ++;
+			}
+		}while(rrn<length);
+	}else{
+		cout << "Found in index but unable to open file -phones_index.txt- \n";
+	}
+	return "Not found...\n";
+}
+
 string phone::toString(){
 	stringstream ss;
 	ss << number << "\t" << id_client;
