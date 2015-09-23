@@ -36,6 +36,7 @@ void searchPhoneMenu(BTree);
 void searchCityMenuFile();
 void searchClientMenuFile();
 void searchPhoneMenuFile();
+void payment(BTree);
 
 /////////////////////////////////////////////////MAIN START///////////////////////////////////////////////////
 int main(int argc, char* argv[]){
@@ -67,7 +68,7 @@ void Menu(){
 
 		cout << "\nWhat do you want to do? (Type in your answer and press ENTER)\n";
 		cout << "a. Add Record\nb. Delete Record\nc. List Record\nd. Modify Record\ne. Search Record\nf. Re-Index\ng. Re-Build Files\nh. Flush Indexes\ni. Re-load Indexes\n";
-		cout << "j. Check Index Status\nz. Exit\n";
+		cout << "j. Check Index Status\nk. Payments\nz. Exit\n";
 		cin >> ans;
 		cin.ignore();
 		switch(ans){
@@ -293,11 +294,44 @@ void Menu(){
 				init_Files();
 				break;
 			case 'h':
-
+				cout << "\nFlush which index? (Type in your answer and press ENTER)\n";
+				cout << "1. City\n2. Client\n3. Phone\n4. All\n";
+				cin >> ans;
+				cin.ignore();
+				switch(ans){
+					case '1':
+						cout << "Attempting flush...\n";
+						city_ref.reIndex();
+						city_index  = city_ref.loadIndex();//Load city_index.txt into a B tree.
+						cout << "Succesfully flushed city index to disc.\n";
+						break;
+					case '2':
+						cout << "Attempting flush...\n";
+						client_ref.reIndex();
+						client_index  = client_ref.loadIndex();//Load client_index.txt into a B tree.
+						cout << "Succesfully flushed client index to disc.\n";
+						break;
+					case '3':
+						cout << "Attempting flush...\n";
+						phone_ref.reIndex();
+						phone_index  = phone_ref.loadIndex();//Load phone_index.txt into a B tree.
+						cout << "Succesfully flushed phone index to disc.\n";
+						break;
+					default:
+						cout << "Attempting flush...\n";
+						city_ref.reIndex();
+						client_ref.reIndex();
+						phone_ref.reIndex();
+						city_index  = city_ref.loadIndex();//Load city_index.txt into a B tree.
+						client_index  = client_ref.loadIndex();//Load client_index.txt into a B tree.
+						phone_index  = phone_ref.loadIndex();//Load phone_index.txt into a B tree.
+						cout << "Succesfully flushed every index to disc.\n";
+						break;
+				}
 				break;
 			case 'i':
 				cout << "\nRe-Load which index? (Type in your answer and press ENTER)\n";
-				cout << "1. City\n2. Client\n3. Phone\n5. All\n";
+				cout << "1. City\n2. Client\n3. Phone\n4. All\n";
 				cin >> ans;
 				cin.ignore();
 				switch(ans){
@@ -311,9 +345,6 @@ void Menu(){
 						phone_index  = phone_ref.loadIndex();//Load phone_index.txt into a B tree.
 						break;
 					case '4':
-						
-						break;
-					case '5':
 						city_index  = city_ref.loadIndex();//Load city_index.txt into a B tree.
 						client_index  = client_ref.loadIndex();//Load client_index.txt into a B tree.
 						phone_index  = phone_ref.loadIndex();//Load phone_index.txt into a B tree.
@@ -352,7 +383,17 @@ void Menu(){
 						break;
 				}
 				break;
+			case 'k':
+				payment(client_index);
+
+				break;
 			case 'z':
+				cout << "Attempting flush...\n";
+				city_ref.reIndex();
+				client_ref.reIndex();
+				phone_ref.reIndex();
+				cout << "Succesfully flushed every index to disc.\n";
+				cout << "Exiting application... Bye  :-)\n";
 				exit(0);
 				break;
 			default:
@@ -655,6 +696,124 @@ void listPhoneMenu(BTree phones_index){
 	is.close();
 }
 
+
+void payment(BTree client_index){
+	long inputs_int;
+	string inputs;
+	client temp;
+	cout << "Existing client ID? (13 DIGITS)\n";
+	std::getline (cin,inputs);
+	stringstream(inputs) >> inputs_int;
+	if(client_index.searchBTKB(inputs_int)){
+		fstream phonie("phones_vector.txt");
+		fstream callies("calls_vector.txt");
+		if(phonie.is_open() && callies.is_open()){
+			int rrn = 1;
+			long offset = 110+rrn*33;
+			phonie.seekg (0, phonie.end);//Move get cursor to the end of file.
+		    long length = phonie.tellg();//Save the value to a variable.
+			do{
+				offset = 110+rrn*33;
+				char * mark = new char;
+				char buffer[8];
+				phonie.seekg(offset);
+				phonie.read(mark,1);
+				char buffer3[13];
+				phonie.seekg(offset+19);
+				phonie.read(buffer3,13);
+				string str(buffer3,13);
+
+				if(*mark == '_' && atol(str.c_str()) == inputs_int){
+					phonie.seekg(offset + 10);
+					phonie.read(buffer, 8);
+					string number(buffer,8);
+					cout << number << "\n";
+					int rrn2 = 1;
+					long offset2 = 128+rrn*58;
+					callies.seekg (0, phonie.end);//Move get cursor to the end of file.
+		    		long length2 = callies.tellg();//Save the value to a variable.
+					do{
+						offset2 = 128+rrn2*58;
+						char * mark2 = new char;
+						char buffer4[8];
+						callies.seekg(offset2);
+						callies.read(mark2,1);
+						callies.seekg(offset2+10);
+						callies.read(buffer4,8);
+						string str2(buffer4,8);
+						if(*mark2 == '_' && number == str2){
+							char buffer7[8];
+							callies.seekg(offset2 + 49);
+							callies.read(buffer7,8);
+							string str3(buffer7,8);
+
+							char yearstart[4];
+							callies.seekg(offset2 + 19);
+							callies.read(yearstart,4);
+							string ys(yearstart,4);
+							char monthstart[2];
+							callies.seekg(offset2 + 23);
+							callies.read(monthstart,2);
+							string ms(monthstart,2);
+							char daystart[2];
+							callies.seekg(offset2 + 25);
+							callies.read(daystart,2);
+							string ds(daystart,2);
+							char hourstart[2];
+							callies.seekg(offset2 + 27);
+							callies.read(hourstart,2);
+							string hs(hourstart,2);
+							char minutestart[2];
+							callies.seekg(offset2 + 29);
+							callies.read(minutestart,2);
+							string mins(minutestart,2);
+							char secondstart[2];
+							callies.seekg(offset2 + 31);
+							callies.read(secondstart,2);
+							string secs(secondstart,2);
+
+							char yearend[4];
+							callies.seekg(offset2 + 34);
+							callies.read(yearend,4);
+							string ye(yearend,4);
+							char monthend[2];
+							callies.seekg(offset2 + 38);
+							callies.read(monthend,2);
+							string me(monthend,2);
+							char dayend[2];
+							callies.seekg(offset2 + 40);
+							callies.read(dayend,2);
+							string de(dayend,2);
+							char hourend[2];
+							callies.seekg(offset2 + 42);
+							callies.read(hourend,2);
+							string he(hourend,2);
+							char minuteend[2];
+							callies.seekg(offset2 + 44);
+							callies.read(minuteend,2);
+							string mine(minuteend,2);
+							char secondend[2];
+							callies.seekg(offset2 + 46);
+							callies.read(secondend,2);
+							string sece(secondend,2);
+
+							cout << str2 << " to " << str3 <<"\n";
+							cout << "Begin: " << ys << "/" << ms << "/" << ds << " at " << hs << ":" << mins << ":" << secs << "\n";
+							cout << "Ended: " << ye << "/" << me << "/" << de << " at " << he << ":" << mine << ":" << sece << "\n\n";
+						}
+						rrn2++;
+					}while(rrn2<(length2-128)/58);
+				}
+				rrn++;
+			}while(rrn<(length-110)/33);
+		}else{
+			cout << "Can't open files...\n";
+		}
+	}else{
+		cout << "Client doesn't exist...\n";
+	}
+
+}
 //////////////////////////////////////////MENU FUNCTIONS END//////////////////////////////////////////////////
 
 //////////////////////////////////////////INITIAL COMPONENTS START////////////////////////////////////////////
