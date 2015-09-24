@@ -37,6 +37,9 @@ void searchCityMenuFile();
 void searchClientMenuFile();
 void searchPhoneMenuFile();
 void payment(BTree);
+void JsonExportCity();
+void JsonExportClient();
+void JsonExportPhone();
 
 /////////////////////////////////////////////////MAIN START///////////////////////////////////////////////////
 int main(int argc, char* argv[]){
@@ -68,7 +71,7 @@ void Menu(){
 
 		cout << "\nWhat do you want to do? (Type in your answer and press ENTER)\n";
 		cout << "a. Add Record\nb. Delete Record\nc. List Record\nd. Modify Record\ne. Search Record\nf. Re-Index\ng. Re-Build Files\nh. Flush Indexes\ni. Re-load Indexes\n";
-		cout << "j. Check Index Status\nk. Payments\nz. Exit\n";
+		cout << "j. Check Index Status\nk. Payments\nl. JSON\nz. Exit\n";
 		cin >> ans;
 		cin.ignore();
 		switch(ans){
@@ -387,6 +390,26 @@ void Menu(){
 				payment(client_index);
 
 				break;
+			case 'l':
+				cout << "\nExport what JSON? (Type in your answer and press ENTER)\n";
+				cout << "1. City\n2. Client\n3. Phone\n";
+				cin >> ans;
+				cin.ignore();
+				switch(ans){
+					case '1':
+						JsonExportCity();
+						break;
+					case '2':
+						JsonExportClient();
+						break;
+					case '3':
+						JsonExportPhone();
+						break;
+					default:
+						cout << "Wrong Input.\n";
+						break;
+				}
+				break;
 			case 'z':
 				cout << "Attempting flush...\n";
 				city_ref.reIndex();
@@ -411,17 +434,22 @@ BTree addClientMenu(BTree client_index){
 	cout << "Client ID? (13 DIGITS)\n";
 	std::getline (cin,inputs);
 	temp2.setId_client(inputs);
-	cout << "Client Name? (MAX 40 CHARACTERS)\n";
-	std::getline (cin,inputs);
-	temp2.setName(inputs);
-	cout << "Client Gender? (M or F)\n";
-	std::getline (cin,inputs);
-	temp2.setGender(inputs.at(0));
-	cout << "Client ID City? ()\n";
-	std::getline (cin,inputs);
-	stringstream(inputs) >> inputs_int;
-	temp2.setId_city(inputs_int);
-	return temp2.addClient(temp2, client_index);
+	if(!client_index.searchBTKB(atol(inputs.c_str()))){
+		cout << "Client Name? (MAX 40 CHARACTERS)\n";
+		std::getline (cin,inputs);
+		temp2.setName(inputs);
+		cout << "Client Gender? (M or F)\n";
+		std::getline (cin,inputs);
+		temp2.setGender(inputs.at(0));
+		cout << "Client ID City? ()\n";
+		std::getline (cin,inputs);
+		stringstream(inputs) >> inputs_int;
+		temp2.setId_city(inputs_int);
+		return temp2.addClient(temp2, client_index);
+	}else{
+		cout << "This record already exists...\n";
+		return client_index;
+	}
 }
 
 //Modify client from user input.
@@ -469,11 +497,16 @@ BTree addCityMenu(BTree city_index){
 	cout << "City ID? (MAX 4 DIGITS)\n";
 	std::getline (cin,inputs);
 	stringstream(inputs) >> inputs_int;
-	temp.setId_city(inputs_int);
-	cout << "City Name? (MAX 40 CHARACTERS)\n";
-	std::getline (cin,inputs);
-	temp.setName(inputs);
-	return temp.addCity(temp, city_index);
+	if(!city_index.searchBTKB(inputs_int)){
+		temp.setId_city(inputs_int);
+		cout << "City Name? (MAX 40 CHARACTERS)\n";
+		std::getline (cin,inputs);
+		temp.setName(inputs);
+		return temp.addCity(temp, city_index);
+	}else{
+		cout << "This record already exists...\n";
+		return city_index;
+	}
 }
 
 
@@ -516,11 +549,16 @@ BTree addPhoneMenu(BTree phone_index){
 	cout << "Phone Number? (8 DIGITS)\n";
 	std::getline (cin,inputs);
 	stringstream(inputs) >> inputs_int;
-	temp.setNumber(inputs_int);
-	cout << "Client ID? (13 DIGITS)\n";
-	std::getline (cin,inputs);
-	temp.setId_client(inputs);
-	return temp.addPhone(temp, phone_index);
+	if(!phone_index.searchBTKB(inputs_int)){
+		temp.setNumber(inputs_int);
+		cout << "Client ID? (13 DIGITS)\n";
+		std::getline (cin,inputs);
+		temp.setId_client(inputs);
+		return temp.addPhone(temp, phone_index);
+	}else{
+		cout << "This record already exists...\n";
+		return phone_index;
+	}
 }
 
 //Modify phone from user input.
@@ -678,6 +716,12 @@ void searchPhoneMenuFile(){
 //List Cities using index
 void listCityMenu(BTree city_index){
 	fstream is("cities_vector.txt");
+	int iter;
+    int counter = 0;
+    int num=1;
+    cout << "How many records per page? (NUMBER)\n";
+    cin >> iter;
+    cin.ignore();
 	city_index.traverseList(1, is);
 	is.close();
 }
@@ -685,6 +729,12 @@ void listCityMenu(BTree city_index){
 //List Clients using index
 void listClientMenu(BTree clients_index){
 	fstream is("clients_vector.txt");
+	int iter;
+    int counter = 0;
+    int num=1;
+    cout << "How many records per page? (NUMBER)\n";
+    cin >> iter;
+    cin.ignore();
 	clients_index.traverseList(2, is);
 	is.close();
 }
@@ -692,18 +742,30 @@ void listClientMenu(BTree clients_index){
 //List Phones using index
 void listPhoneMenu(BTree phones_index){
 	fstream is("phones_vector.txt");
+	int iter;
+    int counter = 0;
+    int num=1;
+    cout << "How many records per page? (NUMBER)\n";
+    cin >> iter;
+    cin.ignore();
 	phones_index.traverseList(3, is);
 	is.close();
 }
 
-
+//Payment Method Calc
 void payment(BTree client_index){
 	long inputs_int;
 	string inputs;
 	client temp;
+	int iter = 0;
+	int counter = 0;
+	int fee_counter = 1;
 	cout << "Existing client ID? (13 DIGITS)\n";
 	std::getline (cin,inputs);
 	stringstream(inputs) >> inputs_int;
+	cout << "How many Fee's per page? (NUMBER)\n";
+	cin >> iter;
+	cin.ignore();
 	if(client_index.searchBTKB(inputs_int)){
 		fstream phonie("phones_vector.txt");
 		fstream callies("calls_vector.txt");
@@ -797,9 +859,55 @@ void payment(BTree client_index){
 							callies.read(secondend,2);
 							string sece(secondend,2);
 
-							cout << str2 << " to " << str3 <<"\n";
+							cout << "Transaction Number: " << fee_counter << "   "<< str2 << " to " << str3 <<"\n";
 							cout << "Begin: " << ys << "/" << ms << "/" << ds << " at " << hs << ":" << mins << ":" << secs << "\n";
-							cout << "Ended: " << ye << "/" << me << "/" << de << " at " << he << ":" << mine << ":" << sece << "\n\n";
+							cout << "Ended: " << ye << "/" << me << "/" << de << " at " << he << ":" << mine << ":" << sece << "\n";
+							
+							int shour = atoi(hourstart);
+							int ehour = atoi(hourend);
+							int sminutes = atoi(minutestart);
+							int eminutes = atoi(minuteend);
+							int sseconds = atoi(secondstart);
+							int eseconds = atoi(secondend);
+							double morningprice = 0;
+							double midprice = 0;
+							double lateprice = 0;
+							double totalprice = 0;
+							if(shour < 8){
+								if(ehour < 8){
+									morningprice = (ehour - shour - 1)*0.01*60 + (60 - sminutes + eminutes)*0.01;
+								}else if(ehour < 16){
+									morningprice = (8 - shour - 1)*0.01*60 + (60 - sminutes)*0.01;
+									midprice = (ehour - 8)*0.05*60 + eminutes*0.05;
+								}else{
+									morningprice = (8 - shour - 1)*0.01*60 + (60 - sminutes)*0.01;
+									midprice = (ehour - 8)*0.05*60;
+									lateprice = (ehour - 16)*0.04*60 + eminutes*0.04;
+								}
+							}else if(shour < 16){
+								if(ehour < 16){
+									midprice = (ehour - shour -1)*0.05*60 + (60 - sminutes + eminutes)*0.05;
+								}else{
+									midprice = (16 - shour -1)*0.05*60 + (60 - sminutes)*0.05;
+									lateprice = (ehour - 16)*0.04*60 + eminutes*0.04; 
+								}
+							}else{
+								lateprice = (ehour - shour -1)*0.04*60 + (60 - sminutes + eminutes)*0.04;
+							}
+							totalprice = morningprice + midprice + lateprice;
+							cout << "Early Fee: " << morningprice << "$ Mid Fee: " << midprice << "$ Late Fee: " << lateprice << "$ *** Total: " << totalprice <<"$ ***\n\n";
+							counter ++;
+							fee_counter++;
+							if(counter == iter){
+								char ans;
+								cout << "Show More? (y/n)\n";
+								cin >> ans;
+								cin.ignore();
+								if(ans == 'y')
+									counter = 0;
+								else
+									break;
+							}
 						}
 						rrn2++;
 					}while(rrn2<(length2-128)/58);
@@ -879,3 +987,104 @@ void saveFiles(vector<city> cities, vector<client> clients, vector<phone> phones
 	phone_ref.saveFile(phones);
 }
 //////////////////////////////CODE FOR CREATING THE ORIGINAL FILES -END-////////////////////////////////////
+
+void JsonExportCity(){
+	fstream is("cities_vector.txt");
+	ofstream json("cities_jason.txt");
+	cout << "Attempting action...\n";
+	int rrn = 1;
+	if(is.is_open() && json.is_open()){
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+    	long length = ((long)is.tellg()-111)/55;
+    	json << "{\"cities\":[\n";
+		do{
+			int offset=111+rrn*55 + 10;
+			char buffer1[4];
+			is.seekg(offset);
+			is.read(buffer1,4);
+			string str(buffer1,4);
+			char buffer2[40];
+			is.seekg(offset+4);
+			is.read(buffer2,40);
+			string str2(buffer2,40);
+			if(rrn == length-1)
+				json << "{\"id\":\""<<str<<"\", \"name\":\""<<str2<<"\"}\n]}";
+			else
+				json << "{\"id\":\""<<str<<"\", \"name\":\""<<str2<<"\"},\n";
+			rrn++;
+		}while(rrn<length);
+		cout << "JSON-ED Succesfuilly.\n";
+	}else{
+		cout << "Could not open file -cities_vector.txt- or -cities_json.txt- \n";
+	}
+}
+
+void JsonExportClient(){
+	fstream is("clients_vector.txt");
+	ofstream json("clients_jason.txt");
+	cout << "Attempting action...\n";
+	int rrn = 1;
+	if(is.is_open() && json.is_open()){
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+    	long length = ((long)is.tellg()-136)/72;
+    	json << "{\"clients\":[\n";
+		do{
+			int offset=136+rrn*72 + 10;
+			char buffer1[13];
+			is.seekg(offset);
+			is.read(buffer1,13);
+			string str(buffer1,13);
+			char buffer2[40];
+			is.seekg(offset+14);
+			is.read(buffer2,40);
+			string str2(buffer2,40);
+			char buffer3[1];
+			is.seekg(offset+55);
+			is.read(buffer3,1);
+			string str3(buffer3,1);
+			char buffer4[4];
+			is.seekg(offset+57);
+			is.read(buffer4,4);
+			string str4(buffer4,4);
+			if(rrn == length-1)
+				json << "{\"id\":\""<<str<<"\", \"name\":\""<<str2<<"\", \"gender\":\""<<str3<<"\", \"city\":\""<<str4<<"\"}\n]}";
+			else
+				json << "{\"id\":\""<<str<<"\", \"name\":\""<<str2<<"\", \"gender\":\""<<str3<<"\", \"city\":\""<<str4<<"\"},\n";
+			rrn++;
+		}while(rrn<length);
+		cout << "JSON-ED Succesfuilly.\n";
+	}else{
+		cout << "Could not open file -clients_vector.txt- or -clients_json.txt- \n";
+	}
+}
+
+void JsonExportPhone(){
+	fstream is("phones_vector.txt");
+	ofstream json("phones_jason.txt");
+	cout << "Attempting action...\n";
+	int rrn = 1;
+	if(is.is_open() && json.is_open()){
+		is.seekg (0, is.end);//Move get cursor to the end of file.
+    	long length = ((long)is.tellg()-111)/55;
+    	json << "{\"phones\":[\n";
+		do{
+			int offset=110+rrn*33 + 10;
+			char buffer1[8];
+			is.seekg(offset);
+			is.read(buffer1,8);
+			string str(buffer1,8);
+			char buffer2[13];
+			is.seekg(offset+9);
+			is.read(buffer2,13);
+			string str2(buffer2,13);
+			if(rrn == length-1)
+				json << "{\"number\":\""<<str<<"\", \"client_id\":\""<<str2<<"\"}\n]}";
+			else
+				json << "{\"number\":\""<<str<<"\", \"client_id\":\""<<str2<<"\"},\n";
+			rrn++;
+		}while(rrn<length);
+		cout << "JSON-ED Succesfuilly.\n";
+	}else{
+		cout << "Could not open file -cities_vector.txt- or -cities_json.txt- \n";
+	}
+}

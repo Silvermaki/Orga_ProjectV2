@@ -135,6 +135,12 @@ BTree city::addCity(city x, BTree index){
 
 void city::availList(){
 	fstream is("cities_vector.txt");//Open the file to list.
+	int counter = 0;
+	int num = 1;
+	int iter;
+	cout << "How many records per page? (NUMBER)\n";
+	cin >> iter;
+	cin.ignore();
 	if(is.is_open()){
 		int rrn=1;//rrn counter
 		is.seekg (0, is.end);//Move get cursor to the end of file.
@@ -149,7 +155,22 @@ void city::availList(){
 	    		char buffer[45];//Buffer to store the registry.
 	    		is.read(buffer,45);//Save into buffer.
 	    		string str(buffer,45);
+	    		cout <<"Record Number " <<num << ": ";
 	    		cout << str;//List.
+
+	    		counter++;
+		        num++;
+		        if(counter == iter){
+		            cout << "Show More? (y/n) \n";
+		            char ans;
+		            cin >> ans;
+		            cin.ignore();
+		            if(ans == 'y'){
+		                counter = 0;
+		            }else{
+		                break;
+		            }
+		        }
 	    	}
 	    	rrn++;
 		}while(rrn!=(length-111)/55);//While the rrn is not equal to length - header size divided by the registry length.
@@ -365,6 +386,8 @@ string city::search2(long xid){
 	}
 	return "Not found...\n";
 }
+
+
 
 string city::toString(){
 	stringstream ss;

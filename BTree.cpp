@@ -53,6 +53,7 @@ void BTreeNode::traverseList(int file, fstream &a){
     int size;
     int size_r;
     int head;
+
     if(file == 1){ 
         size = 55;
         head = 111;
@@ -76,6 +77,7 @@ void BTreeNode::traverseList(int file, fstream &a){
         char buffer[size_r];
         a.read(buffer,size_r); 
         cout << buffer;
+        
     }
     if(leaf == false){
         C[i]->traverseList(file, a);
